@@ -1,0 +1,37 @@
+package sn.brasilburger.services.Impl;
+
+import java.util.Collection;
+import java.util.Optional;
+
+import sn.brasilburger.entity.Menu;
+import sn.brasilburger.repository.MenuRepository;
+import sn.brasilburger.services.MenuService;
+
+public class MenuServiceImpl implements MenuService{
+    private MenuRepository menuRepository;
+    private static MenuServiceImpl instance = null;
+    private MenuServiceImpl(MenuRepository menuRepository){
+        this.menuRepository = menuRepository;
+    }
+    public static MenuServiceImpl getInstance(MenuRepository menuRepository){
+        if (instance==null) {
+            return instance = new MenuServiceImpl(menuRepository);
+        }
+        return instance;
+    }
+    public Collection<Menu> getAllMenu(){
+        return menuRepository.findAll();
+    }
+    public Optional<Menu> getMenuById(int id){
+        return menuRepository.findById(id);
+    }
+    public boolean createMenu(Menu menu){
+        return menuRepository.insert(menu);
+    }
+    public boolean updateMenu(Menu menu){
+        return menuRepository.update(menu);
+    }
+    public boolean archiveMenu(Menu menu){
+        return menuRepository.delete(menu);
+    }
+}
