@@ -1,12 +1,12 @@
 package sn.brasilburger.services;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import sn.brasilburger.entity.Menu;
 
 public interface MenuService {
-    Collection<Menu> getAllMenu();
+    List<Menu> getAllMenu();
     Optional<Menu> getMenuById(int id);
     boolean createMenu(Menu menu);
     boolean updateMenu(Menu menu);

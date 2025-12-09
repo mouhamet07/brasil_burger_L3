@@ -1,12 +1,12 @@
 package sn.brasilburger.repository;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import sn.brasilburger.entity.Menu;
 
 public interface MenuRepository {
-    Collection<Menu> findAll();
+    List<Menu> findAll();
     Optional<Menu> findById(int id);
     boolean insert(Menu menu);
     boolean update(Menu menu);

@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import sn.brasilburger.config.database.Database;
@@ -26,8 +26,8 @@ public class LivreurRepositoryBd implements LivreurRepository {
         return instance;
     }
     @Override
-    public Collection<Livreur> findAll() {
-        Collection<Livreur> livreurs = new ArrayList<>();
+    public List<Livreur> findAll() {
+        List<Livreur> livreurs = new ArrayList<>();
         Connection conn = database.getConnection();
         PreparedStatement ps;
         try {

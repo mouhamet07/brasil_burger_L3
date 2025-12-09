@@ -9,7 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public class BurgerRepositoryBd implements BurgerRepository {
@@ -25,8 +25,8 @@ public class BurgerRepositoryBd implements BurgerRepository {
         return instance;
     }
     @Override
-    public Collection<Burger> findAll() {
-        Collection<Burger> burgers = new ArrayList<>();
+    public List<Burger> findAll() {
+        List<Burger> burgers = new ArrayList<>();
         Connection conn = database.getConnection();
         PreparedStatement ps;
         try {

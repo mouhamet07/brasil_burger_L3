@@ -1,6 +1,6 @@
 package sn.brasilburger.services.Impl;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import sn.brasilburger.entity.Livreur;
@@ -19,7 +19,7 @@ public class LivreurServiceImpl implements LivreurService{
         }
         return instance;
     }
-    public Collection<Livreur> getAllLivreur(){
+    public List<Livreur> getAllLivreur(){
         return livreurRepository.findAll();
     }
     public Optional<Livreur> getLivreurById(int id){

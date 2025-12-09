@@ -1,12 +1,12 @@
 package sn.brasilburger.services;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import sn.brasilburger.entity.Livreur;
 
 public interface LivreurService {
-    Collection<Livreur> getAllLivreur();
+    List<Livreur> getAllLivreur();
     Optional<Livreur> getLivreurById(int id);
     boolean createLivreur(Livreur livreur);
     boolean updateLivreur(Livreur livreur);

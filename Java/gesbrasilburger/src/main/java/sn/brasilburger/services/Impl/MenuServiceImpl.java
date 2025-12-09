@@ -1,6 +1,6 @@
 package sn.brasilburger.services.Impl;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import sn.brasilburger.entity.Menu;
@@ -19,7 +19,7 @@ public class MenuServiceImpl implements MenuService{
         }
         return instance;
     }
-    public Collection<Menu> getAllMenu(){
+    public List<Menu> getAllMenu(){
         return menuRepository.findAll();
     }
     public Optional<Menu> getMenuById(int id){

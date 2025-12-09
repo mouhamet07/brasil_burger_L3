@@ -1,6 +1,6 @@
 package sn.brasilburger.services.Impl;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import sn.brasilburger.entity.Burger;
@@ -19,7 +19,7 @@ public class BurgerServiceImpl implements BurgerService{
         }
         return instance;
     }
-    public Collection<Burger> getAllBurger(){
+    public List<Burger> getAllBurger(){
         return burgerRepository.findAll();
     }
     public Optional<Burger> getBurgerById(int id){

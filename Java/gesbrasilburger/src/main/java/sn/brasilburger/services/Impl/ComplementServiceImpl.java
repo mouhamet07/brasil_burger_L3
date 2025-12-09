@@ -1,6 +1,6 @@
 package sn.brasilburger.services.Impl;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import sn.brasilburger.entity.Complement;
@@ -19,7 +19,7 @@ public class ComplementServiceImpl implements ComplementService{
         }
         return instance;
     }
-    public Collection<Complement> getAllComplement(){
+    public List<Complement> getAllComplement(){
         return complementRepository.findAll();
     }
     public Optional<Complement> getComplementById(int id){

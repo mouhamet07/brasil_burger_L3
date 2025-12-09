@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +25,7 @@ public class ZoneRepositoryBd implements ZoneRepository {
         return instance;
     }
     @Override
-    public Collection<Zone> findAll(){
+    public List<Zone> findAll(){
         List<Zone> zones = new ArrayList<>();
         Connection conn = database.getConnection();
         PreparedStatement ps;

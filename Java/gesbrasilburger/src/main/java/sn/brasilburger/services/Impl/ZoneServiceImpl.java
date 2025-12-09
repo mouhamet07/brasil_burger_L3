@@ -1,6 +1,6 @@
 package sn.brasilburger.services.Impl;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import sn.brasilburger.entity.Zone;
@@ -19,7 +19,7 @@ public class ZoneServiceImpl implements ZoneService{
         }
         return instance;
     }
-    public Collection<Zone> getAllZone(){
+    public List<Zone> getAllZone(){
         return zoneRepository.findAll();
     }
     public Optional<Zone> getZoneById(int id){

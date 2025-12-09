@@ -9,7 +9,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +26,7 @@ public class MenuRepositoryBd implements MenuRepository {
         return instance;
     }
     @Override
-    public Collection<Menu> findAll() {
+    public List<Menu> findAll() {
         List<Menu> menus = new ArrayList<>();
         Connection conn = database.getConnection();
         PreparedStatement ps;
