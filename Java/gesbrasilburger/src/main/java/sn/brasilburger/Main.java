@@ -22,21 +22,24 @@ public class Main {
 
     public static void main(String[] args) {
         Main app = new Main();
+        app.gesAuth();
+    }
+    private void gesApp(){
         int choix;
         do{
             choix = GesViews.menuPrincipale();
             switch (choix) {
                 case 1:
-                    app.gesAjout();
+                    gesAjout();
                     break;
                 case 2:
-                    app.gesUpdate();
+                    gesUpdate();
                     break;
                 case 3:
-                    app.gesArchive();
+                    gesArchive();
                     break;
                 case 4:
-                    app.gesListe();
+                    gesListe();
                     break;
                 case 5:
                     System.out.println("Aurevoir");
@@ -86,7 +89,7 @@ public class Main {
                         System.out.println("Choix de la categorie");
                         System.out.println("1. Frites");
                         System.out.println("2. Boisson");
-                        choixCat = GesViews.saisirInt(null);
+                        choixCat = GesViews.saisirInt("Faites votre choix: ");
                         if (choixCat == 1) {
                             c.setCategorie(CategorieComplement.FRITES);
                         } else if (choixCat == 2) {
@@ -162,8 +165,7 @@ public class Main {
                     GesViews.afficher(zones,"Aucun zone trouvé");
                     Optional<Zone> zone;
                     do {
-                        System.out.println("Saisir l'id de la zone:");
-                        zone = zs.getZoneById(GesViews.saisirInt(""));
+                        zone = zs.getZoneById(GesViews.saisirInt("Saisir l'id de la zone:"));
                     } while (zone.isEmpty());
                     l.setZone(zone.get());
                     success = ls.createLivreur(l);
@@ -499,5 +501,53 @@ public class Main {
                     break;
             }
         }while(choix!=6);
+    }
+    private void gesAuth(){
+        int choix;
+        do {
+            choix = GesViews.menuAuthentification();
+            switch (choix) {
+                case 1:
+                    User user = Login();
+                    if (user != null) {
+                        gesApp();
+                    }
+                    break;
+                case 2:
+                    System.out.println("Ajout d'un gestionnaire ==");
+                    User newUser = new User();
+                    newUser.setNomComplet(GesViews.saisirString("Nom complet: "));
+                    newUser.setTelephone(GesViews.saisirTelephone("Telephone: "));
+                    newUser.setEmail(GesViews.saisirString("Email: "));
+                    newUser.setPassword(GesViews.saisirString("Mot de passe: "));
+                    newUser.setRole(RoleUser.GESTIONNAIRE);
+                    success = logs.signup(newUser);
+                    if (success) {
+                        System.out.println("Gestionnaire ajouté avec succès !");
+                    } else {
+                        System.out.println("Erreur lors de l'ajout du gestionnaire.");
+                    }
+                    break;
+                case 3:
+                    System.out.println("Aurevoir");
+                    break;
+                default:
+                    System.out.println("Choix indisponible");
+                    break;
+            }
+        } while (choix != 3);
+    }
+    private User Login(){
+        System.out.println("=== Authentification ===");
+        String email = GesViews.saisirString("Email: ");
+        String password = GesViews.saisirString("Mot de passe: ");
+        Optional<User> user = logs.login(email, password);
+        if (user.isPresent() && user.get().getRole() == RoleUser.GESTIONNAIRE) {
+            System.out.println("=== Authentification réussie. Bienvenue " + user.get().getNomComplet() + " ===");
+            return user.get();
+        } else {
+            System.out.println("Échec de l'authentification. Veuillez vérifier vos identifiants.");
+            return null;
+        }
     }
 }

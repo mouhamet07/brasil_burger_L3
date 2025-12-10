@@ -7,13 +7,23 @@ public class GesViews {
     private static Scanner scanner = new Scanner(System.in);
     private GesViews(){
     }
+    public static int menuAuthentification(){
+        System.out.println("=== Authentification ===");
+        System.out.println("1. Se connecter");
+        System.out.println("2. Inscrire Gestionnaire");
+        System.out.println("3. Quitter");
+        System.out.println("Faites votre choix: ");
+        int choix = scanner.nextInt();
+        scanner.nextLine();
+        return choix;
+    }
     public static int menuPrincipale(){
         System.out.println("=== Bienvenue dans Brasil Burger ===");
         System.out.println("1. Ajouter une ressource");
         System.out.println("2. Modifier une ressource");
         System.out.println("3. Archiver une ressource");
         System.out.println("4. Listes des ressources");
-        System.out.println("5. Quitter");
+        System.out.println("5. Se deconnnecter");
         System.out.println("Faites votre choix: ");
         int choix = scanner.nextInt();
         scanner.nextLine();

@@ -28,7 +28,7 @@ public class LoginRepositoryBd implements LoginRepository{
             Connection conn = database.getConnection();
             PreparedStatement ps;
         try {
-            ps = conn.prepareStatement("SELECT * FROM \"user\" WHERE email = ? AND etat = true");
+            ps = conn.prepareStatement("SELECT * FROM \"user\" WHERE email = ?");
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -42,8 +42,8 @@ public class LoginRepositoryBd implements LoginRepository{
     @Override
     public boolean addUser(User user) {
         String sql = """
-            INSERT INTO "user" (nom_complet, telephone, email, password, role, etat)
-            VALUES (?, ?, ?, ?, ?, true)
+            INSERT INTO "user" (nom_complet, telephone, email, password, role)
+            VALUES (?, ?, ?, ?, ?::role_user)
         """;
         Connection conn = database.getConnection();
         PreparedStatement ps;
@@ -53,7 +53,7 @@ public class LoginRepositoryBd implements LoginRepository{
             ps.setString(2, user.getTelephone());
             ps.setString(3, user.getEmail());
             ps.setString(4, user.getPassword());
-            ps.setString(5, user.getRole().name());
+            ps.setObject(5, user.getRole().name(), java.sql.Types.OTHER);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -67,7 +67,6 @@ public class LoginRepositoryBd implements LoginRepository{
         u.setTelephone(rs.getString("telephone"));
         u.setEmail(rs.getString("email"));
         u.setPassword(rs.getString("password"));
-        u.setEtat(rs.getBoolean("etat"));
         u.setRole(RoleUser.valueOf(rs.getString("role")));
         return u;
     }

@@ -61,16 +61,20 @@ public class MenuRepositoryBd implements MenuRepository {
         PreparedStatement ps;
         try {
             ps = conn.prepareStatement(
-                "INSERT INTO menu (nom, image, montant, etat) VALUES (?, ?, ?, TRUE)"
+                "INSERT INTO menu (nom, image, montant, etat) VALUES (?, ?, ?, TRUE) RETURNING id"
             );
             ps.setString(1, menu.getNom());
             ps.setString(2, menu.getImage());
             ps.setDouble(3, menu.getMontant());
-            return ps.executeUpdate() > 0;
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                menu.setId(rs.getInt("id"));
+            }
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
+        return false;
     }
     @Override
     public boolean update(Menu menu) {

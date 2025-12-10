@@ -1,5 +1,6 @@
 package sn.brasilburger.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -15,8 +16,8 @@ public class Menu {
     private String nom;
     private String image;
     private Boolean etat = true;
-    private Double montant;
-    private List<Complement> complements;
+    private Double montant = 0.0;
+    private List<Complement> complements = new ArrayList<>();
     @Override
     public String toString() {
     return "Menu [ID: " + id +", Nom: " + nom +", Image: " + image +", Montant: " + montant +", Etat: " + etat +"]";

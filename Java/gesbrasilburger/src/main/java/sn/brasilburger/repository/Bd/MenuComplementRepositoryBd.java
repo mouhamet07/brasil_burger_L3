@@ -26,7 +26,7 @@ public class MenuComplementRepositoryBd implements MenuComplementRepository {
         PreparedStatement ps;
         try {
             ps = conn.prepareStatement(
-                "INSERT INTO menu (complement_id,menu_id) VALUES (?, ?)"
+                "INSERT INTO menu_complement (complement_id,menu_id) VALUES (?, ?)"
             );
             ps.setInt(1, menuC.getComplement().getId());
             ps.setInt(2, menuC.getMenu().getId());
