@@ -28,14 +28,16 @@ CREATE TABLE "user" (
     telephone VARCHAR(20) UNIQUE NOT NULL CHECK (telephone <> ''),
     email VARCHAR(150) UNIQUE NOT NULL CHECK (email <> ''),
     password VARCHAR(255) NOT NULL,
-    role role_user NOT NULL
+    role role_user NOT NULL,
+    etat BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 -- Zone
 CREATE TABLE zone (
     id SERIAL PRIMARY KEY,
     nom VARCHAR(100) NOT NULL,
-    prix_livraison NUMERIC(10,2) NOT NULL CHECK (prix_livraison >= 0)
+    prix_livraison NUMERIC(10,2) NOT NULL CHECK (prix_livraison >= 0),
+    etat BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 -- Livreur
@@ -43,7 +45,8 @@ CREATE TABLE livreur (
     id SERIAL PRIMARY KEY,
     nom_complet VARCHAR(150) NOT NULL,
     telephone VARCHAR(20) UNIQUE NOT NULL CHECK (telephone <> ''),
-    zone_id INT NOT NULL REFERENCES zone(id) ON DELETE CASCADE
+    zone_id INT NOT NULL REFERENCES zone(id) ON DELETE CASCADE,
+    etat BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 -- Burger
