@@ -18,6 +18,7 @@ public class Main {
     private MenuService ms = (MenuService)ServicesFactory.createServices(EntityName.MENU);
     private ZoneService zs = (ZoneService)ServicesFactory.createServices(EntityName.ZONE);
     private MenuComplementService mcs = (MenuComplementService)ServicesFactory.createServices(EntityName.MENU_COMPLEMENT);
+    private ImageUploadService ius = (ImageUploadService)ServicesFactory.createServices(EntityName.IMAGE_UPLOAD);
 
     public static void main(String[] args) {
         Main app = new Main();
@@ -57,7 +58,11 @@ public class Main {
                     b.setNom(GesViews.saisirString("Saisir le nom du burger: "));
                     b.setPrix(GesViews.saisirDouble("Saisir le prix du burger: "));
                     var imgBurger = GesViews.saisirString("Saisir le chemin de l'image");
-                    b.setImage("images/burgers/" + imgBurger);
+                    try {
+                        b.setImage(ius.uploadImage(imgBurger));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     success = bs.createBurger(b);
                     if (success) {
                         System.out.println("Burger ajouté avec succès !");
@@ -71,7 +76,11 @@ public class Main {
                     c.setNom(GesViews.saisirString("Saisir le nom du complement: "));
                     c.setPrix(GesViews.saisirDouble("Saisir le prix du complement: "));
                     var imgCmpl = GesViews.saisirString("Saisir le chemin de l'image");
-                    c.setImage("images/complements/" + imgCmpl);
+                    try {
+                        c.setImage(ius.uploadImage(imgCmpl));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     int choixCat;
                     do {
                         System.out.println("Choix de la categorie");
@@ -98,7 +107,11 @@ public class Main {
                     Menu m = new Menu();
                     m.setNom(GesViews.saisirString("Saisir le nom du menu: "));
                     var imgMenu = GesViews.saisirString("Saisir le chemin de l'image");
-                    m.setImage("images/menus/" + imgMenu);
+                    try {
+                        m.setImage(ius.uploadImage(imgMenu));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     String s;
                     var montant = m.getMontant();
                     do{
@@ -202,7 +215,13 @@ public class Main {
                     img = GesViews.saisirString(
                         "Image actuelle: " + burger.getImage() + ". Nouveau chemin (laisser vide pour garder): "
                     );
-                    if (!img.isBlank()) burger.setImage(img);
+                    if (!img.isBlank()){
+                        try {
+                            burger.setImage(ius.uploadImage(img));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } 
                     success = bs.updateBurger(burger);
                     if (success) {
                         System.out.println("Burger modifié avec succès !");
@@ -235,7 +254,13 @@ public class Main {
                     img = GesViews.saisirString(
                         "Image actuelle: " + comp.getImage() + ". Nouveau chemin (laisser vide pour garder): "
                     );
-                    if (!img.isBlank()) comp.setImage(img);
+                    if (!img.isBlank()){
+                        try {
+                            comp.setImage(ius.uploadImage(img));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } 
                     success = cs.updateComplement(comp);
                     if (success) {
                         System.out.println("Complement modifié avec succès !");
@@ -258,7 +283,13 @@ public class Main {
                     img = GesViews.saisirString(
                         "Image actuelle: " + menu.getImage() + ". Nouveau chemin (laisser vide pour garder): "
                     );
-                    if (!img.isBlank()) menu.setImage(img);
+                    if (!img.isBlank()){
+                        try {
+                            menu.setImage(ius.uploadImage(img));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } 
                     success = ms.updateMenu(menu);
                     if (success) {
                         System.out.println("Menu modifié avec succès !");

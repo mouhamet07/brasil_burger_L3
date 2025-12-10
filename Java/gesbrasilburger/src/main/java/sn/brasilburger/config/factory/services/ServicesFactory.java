@@ -1,5 +1,8 @@
 package sn.brasilburger.config.factory.services;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
+
 import  sn.brasilburger.config.factory.EntityName;
 import  sn.brasilburger.config.factory.repository.RepositoryFactory;
 import  sn.brasilburger.repository.*;
@@ -30,6 +33,13 @@ public final  class ServicesFactory {
             case MENU_COMPLEMENT:
                 MenuComplementRepository menuComplementRepo = (MenuComplementRepository)RepositoryFactory.createRepository(entity);
                 return MenuComplementServiceImpl.getInstance(menuComplementRepo);
+            case IMAGE_UPLOAD:
+                Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
+                        "cloud_name", "mouhamethiam7",
+                        "api_key", "613266736648294",
+                        "api_secret", "PP5H0-BNTYlGRhcVwvGIfHSkWgM"
+                ));
+                return ImageUploadServiceImpl.getInstance(cloudinary);
             default:
             throw new IllegalArgumentException("Unknow entity: "+ entity);
         }
