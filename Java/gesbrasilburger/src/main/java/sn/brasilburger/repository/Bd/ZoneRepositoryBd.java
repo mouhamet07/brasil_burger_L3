@@ -55,7 +55,7 @@ public class ZoneRepositoryBd implements ZoneRepository {
         PreparedStatement ps;
         try {
             ps = conn.prepareStatement(
-                "INSERT INTO zone (nom, prixLivraison) VALUES (?,?)"
+                "INSERT INTO zone (nom, prix_livraison) VALUES (?,?)"
             );
             ps.setString(1, zone.getNom());
             ps.setDouble(2, zone.getPrixLivraison());
@@ -71,7 +71,7 @@ public class ZoneRepositoryBd implements ZoneRepository {
         PreparedStatement ps;
         try {
             ps = conn.prepareStatement(
-                "UPDATE zone SET nom=?, prixLivraison=? WHERE id=?"
+                "UPDATE zone SET nom=?, prix_livraison=? WHERE id=?"
             );
             ps.setString(1, zone.getNom());
             ps.setDouble(2, zone.getPrixLivraison());
@@ -100,7 +100,7 @@ public class ZoneRepositoryBd implements ZoneRepository {
         Zone z = new Zone();
         z.setId(rs.getInt("id"));
         z.setNom(rs.getString("nom"));
-        z.setPrixLivraison(rs.getDouble("prixLivraison"));
+        z.setPrixLivraison(rs.getDouble("prix_livraison"));
         return z;
     }
 }

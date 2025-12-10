@@ -17,6 +17,7 @@ public class Main {
     private LoginService logs = (LoginService)ServicesFactory.createServices(EntityName.LOGIN);
     private MenuService ms = (MenuService)ServicesFactory.createServices(EntityName.MENU);
     private ZoneService zs = (ZoneService)ServicesFactory.createServices(EntityName.ZONE);
+    private MenuComplementService mcs = (MenuComplementService)ServicesFactory.createServices(EntityName.MENU_COMPLEMENT);
 
     public static void main(String[] args) {
         Main app = new Main();
@@ -99,6 +100,7 @@ public class Main {
                     var imgMenu = GesViews.saisirString("Saisir le chemin de l'image");
                     m.setImage("images/menus/" + imgMenu);
                     String s;
+                    var montant = m.getMontant();
                     do{
                         List<Complement> cmpl = cs.getAllComplement();
                         GesViews.afficher(cmpl,"Aucun complement trouvé");
@@ -106,6 +108,8 @@ public class Main {
                         Optional<Complement> cm = cs.getComplementById(id);
                         if(cm.isPresent()){
                             m.getComplements().add(cm.get());
+                            montant += cm.get().getPrix();
+                            m.setMontant(montant);
                         }
                         do{
                             s = GesViews.saisirString("Voulez vous saisir un autre complement?[O/N]").toUpperCase();
@@ -113,6 +117,12 @@ public class Main {
                     }while(!s.equals("N"));
                     success = ms.createMenu(m);
                     if(success){
+                        for (Complement cpl : m.getComplements()) {
+                            MenuComplement menuC = new MenuComplement();
+                            menuC.setComplement(cpl);
+                            menuC.setMenu(m);
+                            mcs.createMenuComplement(menuC);
+                        }
                         System.out.println("Menu ajouté avec succès !");
                     }else{
                         System.out.println("Erreur lors de l'ajout du menu.");
@@ -161,17 +171,39 @@ public class Main {
     }
     private void gesUpdate(){
         int choix;
+        String prixStr;
+        String nom;
+        String img;
         do{
             choix = GesViews.menuUpdate();
             switch (choix) {
                 case 1:
                     int idBurger = GesViews.saisirInt("Saisir l'id du burger: ");
-                    Optional<Burger> burger = bs.getBurgerById(idBurger);
-                    if (burger.isEmpty()) {
+                    Optional<Burger> burgerOpt = bs.getBurgerById(idBurger);
+                    if (burgerOpt.isEmpty()) {
                         System.out.println("Aucun burger trouve");
                         break;
                     }
-                    success = bs.updateBurger(burger.get());
+                    Burger burger = burgerOpt.get();
+                    nom = GesViews.saisirString(
+                        "Nom actuel: " + burger.getNom() + ". Nouveau nom (laisser vide pour garder): "
+                    );
+                    if (!nom.isBlank()) burger.setNom(nom);
+                    prixStr = GesViews.saisirString(
+                        "Montant actuel: " + burger.getPrix() + ". Nouveau montant (laisser vide pour garder): "
+                    );
+                    if (!prixStr.isBlank()) {
+                        try {
+                            burger.setPrix(Double.parseDouble(prixStr));
+                        } catch (NumberFormatException e) {
+                            System.out.println("Montant invalide, valeur inchangée.");
+                        }
+                    }
+                    img = GesViews.saisirString(
+                        "Image actuelle: " + burger.getImage() + ". Nouveau chemin (laisser vide pour garder): "
+                    );
+                    if (!img.isBlank()) burger.setImage(img);
+                    success = bs.updateBurger(burger);
                     if (success) {
                         System.out.println("Burger modifié avec succès !");
                     } else {
@@ -180,12 +212,31 @@ public class Main {
                     break;
                 case 2:
                     int idComplement = GesViews.saisirInt("Saisir l'id du complement: ");
-                    Optional<Complement> comp = cs.getComplementById(idComplement);
-                    if (comp.isEmpty()) {
+                    Optional<Complement> compOpt = cs.getComplementById(idComplement);
+                    if (compOpt.isEmpty()) {
                         System.out.println("Aucun complement trouvé");
                         break;
                     }
-                    success = cs.updateComplement(comp.get());
+                    Complement comp = compOpt.get();
+                    nom = GesViews.saisirString(
+                        "Nom actuel: " + comp.getNom() + ". Nouveau nom (laisser vide pour garder): "
+                    );
+                    if (!nom.isBlank()) comp.setNom(nom);
+                    prixStr = GesViews.saisirString(
+                        "Montant actuel: " + comp.getPrix() + ". Nouveau montant (laisser vide pour garder): "
+                    );
+                    if (!prixStr.isBlank()) {
+                        try {
+                            comp.setPrix(Double.parseDouble(prixStr));
+                        } catch (NumberFormatException e) {
+                            System.out.println("Montant invalide, valeur inchangée.");
+                        }
+                    }
+                    img = GesViews.saisirString(
+                        "Image actuelle: " + comp.getImage() + ". Nouveau chemin (laisser vide pour garder): "
+                    );
+                    if (!img.isBlank()) comp.setImage(img);
+                    success = cs.updateComplement(comp);
                     if (success) {
                         System.out.println("Complement modifié avec succès !");
                     } else {
@@ -194,12 +245,21 @@ public class Main {
                     break;
                 case 3:
                     int idMenu = GesViews.saisirInt("Saisir l'id du menu: ");
-                    Optional<Menu> menu = ms.getMenuById(idMenu);
-                    if (menu.isEmpty()) {
+                    Optional<Menu> menuOpt = ms.getMenuById(idMenu);
+                    if (menuOpt.isEmpty()) {
                         System.out.println("Aucun menu trouvé");
                         break;
                     }
-                    success = ms.updateMenu(menu.get());
+                    Menu menu = menuOpt.get();
+                    nom = GesViews.saisirString(
+                        "Nom actuel: " + menu.getNom() + ". Nouveau nom (laisser vide pour garder): "
+                    );
+                    if (!nom.isBlank()) menu.setNom(nom);
+                    img = GesViews.saisirString(
+                        "Image actuelle: " + menu.getImage() + ". Nouveau chemin (laisser vide pour garder): "
+                    );
+                    if (!img.isBlank()) menu.setImage(img);
+                    success = ms.updateMenu(menu);
                     if (success) {
                         System.out.println("Menu modifié avec succès !");
                     } else {
@@ -208,12 +268,27 @@ public class Main {
                     break;
                 case 4:
                     int idZone = GesViews.saisirInt("Saisir l'id de la zone: ");
-                    Optional<Zone> zone = zs.getZoneById(idZone);
-                    if (zone.isEmpty()) {
+                    Optional<Zone> zoneOpt = zs.getZoneById(idZone);
+                    if (zoneOpt.isEmpty()) {
                         System.out.println("Aucune zone trouvée");
                         break;
                     }
-                    success = zs.updateZone(zone.get());
+                    Zone zone = zoneOpt.get();
+                    nom = GesViews.saisirString(
+                        "Nom actuel: " + zone.getNom() + ". Nouveau nom (laisser vide pour garder): "
+                    );
+                    if (!nom.isBlank()) zone.setNom(nom);
+                    prixStr = GesViews.saisirString(
+                        "Montant actuel: " + zone.getPrixLivraison() + ". Nouveau montant (laisser vide pour garder): "
+                    );
+                    if (!prixStr.isBlank()) {
+                        try {
+                            zone.setPrixLivraison(Double.parseDouble(prixStr));
+                        } catch (NumberFormatException e) {
+                            System.out.println("Montant invalide, valeur inchangée.");
+                        }
+                    }
+                    success = zs.updateZone(zone);
                     if (success) {
                         System.out.println("Zone modifiée avec succès !");
                     } else {
@@ -222,12 +297,39 @@ public class Main {
                     break;
                 case 5:
                     int idLivreur = GesViews.saisirInt("Saisir l'id du livreur: ");
-                    Optional<Livreur> liv = ls.getLivreurById(idLivreur);
-                    if (liv.isEmpty()) {
+                    Optional<Livreur> livOpt = ls.getLivreurById(idLivreur);
+                    if (livOpt.isEmpty()) {
                         System.out.println("Aucun livreur trouvé");
                         break;
                     }
-                    success = ls.updateLivreur(liv.get());
+                    Livreur liv = livOpt.get();
+                    nom = GesViews.saisirString(
+                        "Nom actuel: " + liv.getNomComplet() + ". Nouveau nom (laisser vide pour garder): "
+                    );
+                    if (!nom.isBlank()) liv.setNomComplet(nom);
+                    String tel = GesViews.saisirTelephone(
+                        "Telephone actuel: " + liv.getTelephone() + ". Nouveau telephone (laisser vide pour garder): "
+                    );
+                    if (!tel.isBlank()) liv.setTelephone(tel);
+                    List<Zone> zones = zs.getAllZone();
+                    GesViews.afficher(zones, "Aucune zone trouvée");
+                    String zoneInput = GesViews.saisirString(
+                        "ID de la zone actuelle: " + (liv.getZone() != null ? liv.getZone().getId() : "aucune") +
+                        ". Nouveau ID (laisser vide pour garder) : "
+                    );
+                    if (!zoneInput.isBlank()) {
+                        try {
+                            idZone = Integer.parseInt(zoneInput);
+                            Optional<Zone> zOpt = zs.getZoneById(idZone);
+                            if (zOpt.isPresent()) {
+                                liv.setZone(zOpt.get());
+                            } else {
+                                System.out.println("Zone invalide, valeur inchangée.");
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("ID invalide, valeur inchangée.");
+                        }
+                    }
                     if (success) {
                         System.out.println("Livreur modifié avec succès !");
                     } else {
@@ -330,7 +432,7 @@ public class Main {
     private void gesListe(){
         int choix;
         do{
-            choix = GesViews.menuArchive();
+            choix = GesViews.menuLister();
             switch (choix) {
                 case 1:
                     List<Burger> burgers = bs.getAllBurger();
@@ -342,7 +444,13 @@ public class Main {
                     break;
                 case 3:
                     List<Menu> menus = ms.getAllMenu();
-                    GesViews.afficher(menus,"Aucun menu trouvé");
+                    for (Menu menu : menus) {
+                        System.out.println(menu);
+                        System.out.println("=== COMPLEMENTS ===");
+                        List<Complement> complementsMenu = cs.getComplementsByMenu(menu.getId());
+                        menu.setComplements(complementsMenu);
+                        complementsMenu.forEach(System.out::println);
+                    }
                     break;
                 case 4:
                     List<Zone> zones = zs.getAllZone();

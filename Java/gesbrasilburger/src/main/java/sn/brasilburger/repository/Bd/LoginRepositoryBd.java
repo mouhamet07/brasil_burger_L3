@@ -42,7 +42,7 @@ public class LoginRepositoryBd implements LoginRepository{
     @Override
     public boolean addUser(User user) {
         String sql = """
-            INSERT INTO "user" (nomComplet, telephone, email, password, role, etat)
+            INSERT INTO "user" (nom_complet, telephone, email, password, role, etat)
             VALUES (?, ?, ?, ?, ?, true)
         """;
         Connection conn = database.getConnection();

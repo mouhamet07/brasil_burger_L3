@@ -23,6 +23,7 @@ public final class EntityManager {
         config.put("pwd", "");
         return config;
     }
+    /*/
     private static final Map<String, String> PersistenceUnitPostgresql(){
         Map<String, String> config = new HashMap<>();
         config.put("driver", "org.postgresql.Driver");
@@ -31,4 +32,14 @@ public final class EntityManager {
         config.put("pwd", "Mouhamed-1234");
         return config;
     }
+        */
+    private static final Map<String, String> PersistenceUnitPostgresql(){
+        Map<String, String> config = new HashMap<>();
+        config.put("driver", "org.postgresql.Driver");
+        config.put("url", "jdbc:postgresql://ep-plain-tree-aht27lqk-pooler.c-3.us-east-1.aws.neon.tech:5432/brasilBurger?sslmode=require&channel_binding=require");
+        config.put("user", "neondb_owner");
+        config.put("pwd", "npg_pAj8FHkKlZL6");
+        return config;
+    }
+
 }

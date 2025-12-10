@@ -27,6 +27,9 @@ public final  class ServicesFactory {
             case ZONE:
                 ZoneRepository zoneRepo = (ZoneRepository)RepositoryFactory.createRepository(entity);
                 return ZoneServiceImpl.getInstance(zoneRepo);
+            case MENU_COMPLEMENT:
+                MenuComplementRepository menuComplementRepo = (MenuComplementRepository)RepositoryFactory.createRepository(entity);
+                return MenuComplementServiceImpl.getInstance(menuComplementRepo);
             default:
             throw new IllegalArgumentException("Unknow entity: "+ entity);
         }

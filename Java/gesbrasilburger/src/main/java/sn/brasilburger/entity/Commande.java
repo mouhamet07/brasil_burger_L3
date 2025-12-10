@@ -1,7 +1,7 @@
 package sn.brasilburger.entity;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,6 +23,6 @@ public class Commande {
     private User client;
     private Zone zone;
     private Livreur livreur;
-    private Collection<CommandeItem> items;
+    private List<CommandeItem> items;
     private Paiement paiement;
 }

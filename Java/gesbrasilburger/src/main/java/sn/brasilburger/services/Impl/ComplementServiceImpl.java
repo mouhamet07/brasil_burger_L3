@@ -34,4 +34,7 @@ public class ComplementServiceImpl implements ComplementService{
     public boolean archiveComplement(Complement complement){
         return complementRepository.delete(complement);
     }
+    public List<Complement> getComplementsByMenu(int idMenu){
+        return complementRepository.getComplementsByMenu(idMenu);
+    }
 }

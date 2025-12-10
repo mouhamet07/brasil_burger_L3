@@ -59,7 +59,7 @@ public class LivreurRepositoryBd implements LivreurRepository {
         PreparedStatement ps;
         try {
             ps = conn.prepareStatement(
-                "INSERT INTO livreur (nomComplet, telephone, idzone, etat) VALUES (?, ?, ?, true)"
+                "INSERT INTO livreur (nom_complet, telephone, zone_id, etat) VALUES (?, ?, ?, true)"
             );
             ps.setString(1, livreur.getNomComplet());
             ps.setString(2, livreur.getTelephone());
@@ -76,7 +76,7 @@ public class LivreurRepositoryBd implements LivreurRepository {
         PreparedStatement ps;
         try {
             ps = conn.prepareStatement(
-                "UPDATE livreur SET nomComplet=?, telephone=?, idZone=? WHERE id=?"
+                "UPDATE livreur SET nom_complet=?, telephone=?, zone_id=? WHERE id=?"
             );
             ps.setString(1, livreur.getNomComplet());
             ps.setString(2, livreur.getTelephone());
@@ -105,10 +105,10 @@ public class LivreurRepositoryBd implements LivreurRepository {
     private Livreur toEntity(ResultSet rs) throws SQLException {
         Livreur l = new Livreur();
         l.setId(rs.getInt("id"));
-        l.setNomComplet(rs.getString("nomComplet"));
+        l.setNomComplet(rs.getString("nom_complet"));
         l.setTelephone(rs.getString("telephone"));
         Zone z = new Zone();
-        z.setId(rs.getInt("idZone"));
+        z.setId(rs.getInt("zone_id"));
         l.setZone(z);
         l.setEtat(rs.getBoolean("etat"));
         return l;

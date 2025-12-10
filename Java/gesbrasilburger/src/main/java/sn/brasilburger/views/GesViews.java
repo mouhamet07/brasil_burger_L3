@@ -85,6 +85,7 @@ public class GesViews {
         do {
             System.out.println(msg);
             champ = scanner.nextInt();
+            scanner.nextLine();
             if (champ < 0) {
                 System.out.println("Le Champ doit etre positif!!");
             }
@@ -96,6 +97,7 @@ public class GesViews {
         do {
             System.out.println(msg);
             champ = scanner.nextInt();
+            scanner.nextLine();
             if (champ < 0) {
                 System.out.println("Le Champ doit etre positif!!");
             }

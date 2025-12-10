@@ -11,4 +11,5 @@ public interface ComplementRepository {
     boolean insert(Complement complement);
     boolean update(Complement complement);
     boolean delete(Complement complement);
+    List<Complement> getComplementsByMenu(int idMenu);
 }

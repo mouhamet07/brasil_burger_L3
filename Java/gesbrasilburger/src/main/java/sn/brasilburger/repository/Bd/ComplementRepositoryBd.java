@@ -61,7 +61,7 @@ public class ComplementRepositoryBd implements ComplementRepository {
         PreparedStatement ps;
         try {
             ps = conn.prepareStatement(
-                "INSERT INTO complement (nom, prix, image, categorie_id, etat) VALUES (?, ?, ?, ?, true)"
+                "INSERT INTO complement (nom, prix, image, categorie, etat) VALUES (?, ?, ?, ?, true)"
             );
             ps.setString(1, complement.getNom());
             ps.setDouble(2, complement.getPrix());
@@ -79,7 +79,7 @@ public class ComplementRepositoryBd implements ComplementRepository {
         PreparedStatement ps;
         try {
             ps = conn.prepareStatement(
-                "UPDATE complement SET nom=?, prix=?, image=?, categorie_id=? WHERE id=?"
+                "UPDATE complement SET nom=?, prix=?, image=?, categorie=? WHERE id=?"
             );
             ps.setString(1, complement.getNom());
             ps.setDouble(2, complement.getPrix());
@@ -119,6 +119,23 @@ public class ComplementRepositoryBd implements ComplementRepository {
             c.setCategorie(CategorieComplement.valueOf(catStr.toUpperCase()));
         }
         return c;
+    }
+    public List<Complement> getComplementsByMenu(int idMenu){
+        List<Complement> complements = new ArrayList<>();
+        Connection conn = database.getConnection();
+        PreparedStatement ps;
+        try {
+            ps = conn.prepareStatement(
+                "SELECT c.* FROM complement c " +
+                "JOIN menu_complement mc ON c.id = mc.complement_id " +
+                "WHERE mc.menu_id = ? AND c.etat = true"
+            );
+            ps.setInt(1, idMenu); // IMPORTANT !
+            complements = database.fetchAll(ps, this::toEntity);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return complements;
     }
 
 }

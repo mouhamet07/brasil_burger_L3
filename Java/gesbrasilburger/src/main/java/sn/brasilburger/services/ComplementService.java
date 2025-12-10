@@ -11,4 +11,5 @@ public interface ComplementService {
     boolean createComplement(Complement complement);
     boolean updateComplement(Complement complement);
     boolean archiveComplement(Complement complement);
+    List<Complement> getComplementsByMenu(int idMenu);
 }

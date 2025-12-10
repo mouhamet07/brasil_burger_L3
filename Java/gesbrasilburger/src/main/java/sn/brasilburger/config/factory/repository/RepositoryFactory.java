@@ -24,6 +24,8 @@ public final class RepositoryFactory {
                 return MenuRepositoryBd.getInstance(database);
             case ZONE:
                 return ZoneRepositoryBd.getInstance(database);
+            case MENU_COMPLEMENT:
+                return MenuComplementRepositoryBd.getInstance(database);
             default:
             throw new IllegalArgumentException("Unknon Entity: "+ entity);
         }
