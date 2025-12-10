@@ -24,7 +24,7 @@ CREATE TYPE type_commande_item AS ENUM ('BURGER', 'MENU', 'COMPLEMENT');
 -- User
 CREATE TABLE "user" (
     id SERIAL PRIMARY KEY,
-    nomComplet VARCHAR(150) NOT NULL,
+    nom_complet VARCHAR(150) NOT NULL,
     telephone VARCHAR(20) UNIQUE NOT NULL CHECK (telephone <> ''),
     email VARCHAR(150) UNIQUE NOT NULL CHECK (email <> ''),
     password VARCHAR(255) NOT NULL,
@@ -35,13 +35,13 @@ CREATE TABLE "user" (
 CREATE TABLE zone (
     id SERIAL PRIMARY KEY,
     nom VARCHAR(100) NOT NULL,
-    prixLivraison NUMERIC(10,2) NOT NULL CHECK (prixLivraison >= 0)
+    prix_livraison NUMERIC(10,2) NOT NULL CHECK (prix_livraison >= 0)
 );
 
 -- Livreur
 CREATE TABLE livreur (
     id SERIAL PRIMARY KEY,
-    nomComplet VARCHAR(150) NOT NULL,
+    nom_complet VARCHAR(150) NOT NULL,
     telephone VARCHAR(20) UNIQUE NOT NULL CHECK (telephone <> ''),
     zone_id INT NOT NULL REFERENCES zone(id) ON DELETE CASCADE
 );
@@ -61,7 +61,7 @@ CREATE TABLE menu (
     nom VARCHAR(150) NOT NULL,
     image TEXT,
     etat BOOLEAN NOT NULL DEFAULT TRUE,
-    montant NUMERIC(10,2) NOT NULL CHECK (montant >= 0)
+    montant NUMERIC(10,2) NOT NULL CHECK (montant >= 0),
 );
 
 -- Complement
@@ -87,7 +87,7 @@ CREATE TABLE commande (
     dateCommande TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     etat etat_commande NOT NULL DEFAULT 'EN_ATTENTE',
     type type_commande NOT NULL,
-    montantTotal NUMERIC(10,2) NOT NULL CHECK (montantTotal >= 0),
+    montant_total NUMERIC(10,2) NOT NULL CHECK (montant_total >= 0),
     client_id INT NOT NULL REFERENCES "user"(id),
     zone_id INT REFERENCES zone(id),
     livreur_id INT REFERENCES livreur(id)
@@ -100,13 +100,13 @@ CREATE TABLE commande_item (
     type type_commande_item NOT NULL,
     produit_id INT NOT NULL,
     quantite INT NOT NULL CHECK (quantite > 0),
-    prixUnitaire NUMERIC(10,2) NOT NULL CHECK (prixUnitaire >= 0)
+    prix_unitaire NUMERIC(10,2) NOT NULL CHECK (prix_unitaire >= 0)
 );
 
 -- Paiement
 CREATE TABLE paiement (
     id SERIAL PRIMARY KEY,
-    datePaiement TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    date_paiement TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     montant NUMERIC(10,2) NOT NULL CHECK (montant >= 0),
     mode mode_paiement NOT NULL,
     commande_id INT NOT NULL UNIQUE REFERENCES commande(id) ON DELETE CASCADE
