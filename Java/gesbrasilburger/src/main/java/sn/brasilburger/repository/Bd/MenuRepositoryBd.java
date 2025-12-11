@@ -61,11 +61,12 @@ public class MenuRepositoryBd implements MenuRepository {
         PreparedStatement ps;
         try {
             ps = conn.prepareStatement(
-                "INSERT INTO menu (nom, image, montant, etat) VALUES (?, ?, ?, TRUE) RETURNING id"
+                "INSERT INTO menu (nom, image, montant, burger_id, etat ) VALUES (?, ?, ?, ?, TRUE) RETURNING id"
             );
             ps.setString(1, menu.getNom());
             ps.setString(2, menu.getImage());
             ps.setDouble(3, menu.getMontant());
+            ps.setInt(4, menu.getBurger().getId());
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 menu.setId(rs.getInt("id"));

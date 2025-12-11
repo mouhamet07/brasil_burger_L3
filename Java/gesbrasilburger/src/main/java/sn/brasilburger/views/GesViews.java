@@ -156,6 +156,7 @@ public class GesViews {
     }
     public static void afficherErreur(String msg){
         System.out.println(Color.RED + msg +  Color.RESET);
+        pause(5000);
     }
     public static void afficherSuccess(String msg){
         System.out.println(Color.GREEN + msg + Color.RESET);

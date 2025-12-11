@@ -104,6 +104,22 @@ public class BurgerRepositoryBd implements BurgerRepository {
         }
         return false;
     }
+    @Override
+    public Optional<Burger> getBurgerByMenu(sn.brasilburger.entity.Menu menu)
+    {
+        Connection conn = database.getConnection();
+        PreparedStatement ps;
+        try {
+            ps = conn.prepareStatement(
+                "SELECT b.* FROM burger b JOIN menu m ON b.id = m.burger_id WHERE m.id = ? AND b.etat = true"
+            );
+            ps.setInt(1, menu.getId());
+            return database.fetch(ps, this::toEntity);
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la recherche du burger par menu: " + e.getMessage());
+        }
+        return Optional.empty();
+    }
     private Burger toEntity(ResultSet rs) throws SQLException {
         Burger b = new Burger();
         b.setId(rs.getInt("id"));

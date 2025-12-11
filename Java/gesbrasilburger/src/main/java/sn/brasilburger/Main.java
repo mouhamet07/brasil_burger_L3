@@ -598,9 +598,13 @@ public class Main {
                     }else{
                         for (Menu menu : menus) {
                         System.out.println(menu);
+                        Optional<Burger> burger = bs.getBurgerByMenu(menu);
+                        burger.ifPresent(menu::setBurger);
+                        System.out.println(menu.getBurger());
                         List<Complement> complementsMenu = cs.getComplementsByMenu(menu.getId());
                         menu.setComplements(complementsMenu);
                         complementsMenu.forEach(System.out::println);
+                        System.out.println("--------------------------------------------------------------------");
                     }
                     GesViews.waitForKey();
                     }
@@ -622,7 +626,7 @@ public class Main {
                         System.out.println(livreur);
                         Optional<Zone> zone = zs.getZoneById(livreur.getZone().getId());
                         zone.ifPresent(livreur::setZone);
-                        System.out.println("Zone: " + livreur.getZone());
+                        System.out.println("->Zone: " + livreur.getZone());
                     }
                     }
                     GesViews.waitForKey();

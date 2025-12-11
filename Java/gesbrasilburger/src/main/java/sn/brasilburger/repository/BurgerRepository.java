@@ -9,4 +9,5 @@ public interface BurgerRepository {
     boolean insert(Burger burger);
     boolean update(Burger burger);
     boolean delete(Burger burger);
+    Optional<Burger> getBurgerByMenu(Menu menu);
 }

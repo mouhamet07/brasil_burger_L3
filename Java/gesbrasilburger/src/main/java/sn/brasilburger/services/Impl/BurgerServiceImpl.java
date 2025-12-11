@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import sn.brasilburger.entity.Burger;
+import sn.brasilburger.entity.Menu;
 import sn.brasilburger.repository.BurgerRepository;
 import sn.brasilburger.services.BurgerService;
 
@@ -38,5 +39,9 @@ public class BurgerServiceImpl implements BurgerService{
     @Override
     public boolean archiveBurger(Burger burger){
         return burgerRepository.delete(burger);
+    }
+    @Override
+    public Optional<Burger> getBurgerByMenu(Menu menu){
+        return burgerRepository.getBurgerByMenu(menu);
     }
 }
