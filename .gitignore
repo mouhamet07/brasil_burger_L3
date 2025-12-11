@@ -1,0 +1,29 @@
+# Dossiers de développement par langage
+Java/
+Symfony/
+CSharp/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Dependencies
+node_modules/
+vendor/
+bin/
+obj/
+
+# Build
+target/
+dist/
+build/
+
+# Environment
+.env
+.env.local
