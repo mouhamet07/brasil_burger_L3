@@ -65,6 +65,7 @@ CREATE TABLE menu (
     image TEXT,
     etat BOOLEAN NOT NULL DEFAULT TRUE,
     montant NUMERIC(10,2) NOT NULL CHECK (montant >= 0),
+    burger_id INT NOT NULL REFERENCES burger(id) ON DELETE CASCADE
 );
 
 -- Complement
