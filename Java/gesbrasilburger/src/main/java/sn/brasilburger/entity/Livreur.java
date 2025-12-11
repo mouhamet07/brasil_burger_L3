@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
-@ToString
 @Getter
 @Setter
 @AllArgsConstructor
@@ -17,4 +15,9 @@ public class Livreur {
     private String telephone;
     private Zone zone;
     private boolean etat = true ;
+    @Override
+    public String toString(){
+        return " Livreur->[ID: " + id + ", Nom Complet: " + nomComplet + ", Telephone: " + 
+        telephone + ", Zone: " + zone.getNom() + "]";
+    }
 }

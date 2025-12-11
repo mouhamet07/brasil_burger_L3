@@ -19,18 +19,23 @@ public class MenuServiceImpl implements MenuService{
         }
         return instance;
     }
+    @Override
     public List<Menu> getAllMenu(){
         return menuRepository.findAll();
     }
+    @Override
     public Optional<Menu> getMenuById(int id){
         return menuRepository.findById(id);
     }
+    @Override
     public boolean createMenu(Menu menu){
         return menuRepository.insert(menu);
     }
+    @Override
     public boolean updateMenu(Menu menu){
         return menuRepository.update(menu);
     }
+    @Override
     public boolean archiveMenu(Menu menu){
         return menuRepository.delete(menu);
     }

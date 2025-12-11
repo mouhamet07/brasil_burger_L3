@@ -19,18 +19,23 @@ public class BurgerServiceImpl implements BurgerService{
         }
         return instance;
     }
+    @Override
     public List<Burger> getAllBurger(){
         return burgerRepository.findAll();
     }
+    @Override
     public Optional<Burger> getBurgerById(int id){
         return burgerRepository.findById(id);
     }
+    @Override
     public boolean createBurger(Burger burger){
         return burgerRepository.insert(burger);
     }
+    @Override
     public boolean updateBurger(Burger burger){
         return burgerRepository.update(burger);
     }
+    @Override
     public boolean archiveBurger(Burger burger){
         return burgerRepository.delete(burger);
     }

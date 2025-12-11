@@ -36,7 +36,7 @@ public class MenuRepositoryBd implements MenuRepository {
             );
             menus = database.<Menu>fetchAll(ps, this::toEntity);
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Erreur lors de la recherche: " + e.getMessage());
         }
         return menus;
     }
@@ -51,7 +51,7 @@ public class MenuRepositoryBd implements MenuRepository {
             ps.setInt(1, id);
             return database.<Menu>fetch(ps, this::toEntity);
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Erreur lors de la recherche: " + e.getMessage());
         }
         return Optional.empty();
     }
@@ -72,7 +72,7 @@ public class MenuRepositoryBd implements MenuRepository {
             }
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Erreur lors de l'ajout: " + e.getMessage());
         }
         return false;
     }
@@ -90,7 +90,7 @@ public class MenuRepositoryBd implements MenuRepository {
             ps.setInt(4, menu.getId());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Erreur lors de la modification: " + e.getMessage());
         }
         return false;
     }
@@ -105,7 +105,7 @@ public class MenuRepositoryBd implements MenuRepository {
             ps.setInt(1, menu.getId());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Erreur lors de l'archivage: " + e.getMessage());
         }
         return false;
     }

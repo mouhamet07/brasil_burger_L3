@@ -19,18 +19,23 @@ public class ZoneServiceImpl implements ZoneService{
         }
         return instance;
     }
+    @Override
     public List<Zone> getAllZone(){
         return zoneRepository.findAll();
     }
+    @Override
     public Optional<Zone> getZoneById(int id){
         return zoneRepository.findById(id);
     }
+    @Override
     public boolean createZone(Zone zone){
         return zoneRepository.insert(zone);
     }
+    @Override
     public boolean updateZone(Zone zone){
         return zoneRepository.update(zone);
     }
+    @Override
     public boolean archiveZone(Zone zone){
         return zoneRepository.delete(zone);
     }

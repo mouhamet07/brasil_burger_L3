@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
-@ToString
 @Getter
 @Setter
 @AllArgsConstructor
@@ -16,4 +14,7 @@ public class Zone {
     private String nom;
     private Double prixLivraison;
     private boolean etat = true;
+    public String toString(){
+        return " Complement->[ID: " + id + ", Nom: " + nom + ", Prix Livraison: " + prixLivraison + "]";
+    }
 }

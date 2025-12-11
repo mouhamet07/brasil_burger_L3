@@ -36,7 +36,7 @@ public class LivreurRepositoryBd implements LivreurRepository {
             );
             livreurs =  database.fetchAll(ps, this::toEntity);
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Erreur lors de la recherche: " + e.getMessage());
         }
         return livreurs;
     }
@@ -49,7 +49,7 @@ public class LivreurRepositoryBd implements LivreurRepository {
             ps.setInt(1, id);
             return database.<Livreur>fetch(ps, this::toEntity);
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Erreur lors de la recherche: " + e.getMessage());
         }
         return Optional.empty();
     }
@@ -66,7 +66,7 @@ public class LivreurRepositoryBd implements LivreurRepository {
             ps.setInt(3, livreur.getZone().getId());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Erreur lors de l'ajout: " + e.getMessage());
         }
         return false;
     }
@@ -84,7 +84,7 @@ public class LivreurRepositoryBd implements LivreurRepository {
             ps.setInt(4, livreur.getId());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Erreur lors de la modification: " + e.getMessage());
         }
         return false;
     }
@@ -98,7 +98,7 @@ public class LivreurRepositoryBd implements LivreurRepository {
             ps.setInt(1, livreur.getId());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Erreur lors de l'archivage: " + e.getMessage());
         }
         return false;
     }

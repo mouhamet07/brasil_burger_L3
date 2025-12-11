@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -17,9 +18,10 @@ public class Menu {
     private String image;
     private Boolean etat = true;
     private Double montant = 0.0;
+    private Burger burger;
     private List<Complement> complements = new ArrayList<>();
     @Override
-    public String toString() {
-    return "Menu [ID: " + id +", Nom: " + nom +", Image: " + image +", Montant: " + montant +", Etat: " + etat +"]";
-}
+    public String toString(){
+        return " Menu->[ID: " + id + ", Nom: " + nom + ", Prix: " + montant + "]";
+    }
 }

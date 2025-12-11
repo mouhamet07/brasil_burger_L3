@@ -4,10 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @NoArgsConstructor
-@ToString
 @Getter
 @Setter
 @AllArgsConstructor
@@ -17,4 +15,8 @@ public class Burger {
     private Double prix;
     private String image;
     private Boolean etat = true;
+    @Override
+    public String toString(){
+        return " Burger->[ID: " + id + ", Nom: " + nom + ", Prix: " + prix + "]";
+    }
 }

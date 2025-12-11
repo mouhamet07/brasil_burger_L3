@@ -35,7 +35,7 @@ public class BurgerRepositoryBd implements BurgerRepository {
             );
             burgers = database.fetchAll(ps, this::toEntity);
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Erreur lors de la recherche: " + e.getMessage());
         }
         return burgers;
     }
@@ -50,7 +50,7 @@ public class BurgerRepositoryBd implements BurgerRepository {
             ps.setInt(1, id);
             return database.fetch(ps, this::toEntity);
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Erreur lors de la recherche: " + e.getMessage());
         }
         return Optional.empty();
     }
@@ -67,7 +67,7 @@ public class BurgerRepositoryBd implements BurgerRepository {
             ps.setString(3, burger.getImage());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Erreur lors de l'ajout: " + e.getMessage());
         }
         return false;
     }
@@ -85,7 +85,7 @@ public class BurgerRepositoryBd implements BurgerRepository {
             ps.setInt(4, burger.getId());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Erreur lors de la modification: " + e.getMessage());
         }
         return false;
     }
@@ -100,7 +100,7 @@ public class BurgerRepositoryBd implements BurgerRepository {
             ps.setInt(1, burger.getId());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Erreur lors de l'archivage: " + e.getMessage());
         }
         return false;
     }

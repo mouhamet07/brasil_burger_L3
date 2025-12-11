@@ -33,7 +33,7 @@ public class ZoneRepositoryBd implements ZoneRepository {
             ps = conn.prepareStatement("SELECT * FROM zone WHERE etat = true");
             return database.<Zone>fetchAll(ps, this::toEntity);
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Erreur lors de la recherche: " + e.getMessage());
         }
         return zones;
     }
@@ -46,7 +46,7 @@ public class ZoneRepositoryBd implements ZoneRepository {
             ps.setInt(1, id);
             return database.<Zone>fetch(ps, this::toEntity);
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Erreur lors de la recherche: " + e.getMessage());
         }
         return Optional.empty();
     }
@@ -61,7 +61,7 @@ public class ZoneRepositoryBd implements ZoneRepository {
             ps.setDouble(2, zone.getPrixLivraison());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Erreur lors de l'ajout: " + e.getMessage());
         }
         return false ;
     }
@@ -78,7 +78,7 @@ public class ZoneRepositoryBd implements ZoneRepository {
             ps.setInt(3, zone.getId());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Erreur lors de la modification: " + e.getMessage());
         }
         return false;
     }
@@ -92,7 +92,7 @@ public class ZoneRepositoryBd implements ZoneRepository {
             ps.setInt(1, zone.getId());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Erreur lors de l'archivage: " + e.getMessage());
         }
         return false;
     }

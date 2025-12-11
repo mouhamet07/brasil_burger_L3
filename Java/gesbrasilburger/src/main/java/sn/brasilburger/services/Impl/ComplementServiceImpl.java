@@ -19,21 +19,27 @@ public class ComplementServiceImpl implements ComplementService{
         }
         return instance;
     }
+    @Override
     public List<Complement> getAllComplement(){
         return complementRepository.findAll();
     }
+    @Override
     public Optional<Complement> getComplementById(int id){
         return complementRepository.findById(id);
     }
+    @Override
     public boolean createComplement(Complement complement){
         return complementRepository.insert(complement);
     }
+    @Override
     public boolean updateComplement(Complement complement){
         return complementRepository.update(complement);
     }
+    @Override
     public boolean archiveComplement(Complement complement){
         return complementRepository.delete(complement);
     }
+    @Override
     public List<Complement> getComplementsByMenu(int idMenu){
         return complementRepository.getComplementsByMenu(idMenu);
     }

@@ -27,6 +27,8 @@ public class Main {
     private void gesApp(){
         int choix;
         do{
+            GesViews.pause(1200);
+            GesViews.clearScreen();
             choix = GesViews.menuPrincipale();
             switch (choix) {
                 case 1:
@@ -42,10 +44,10 @@ public class Main {
                     gesListe();
                     break;
                 case 5:
-                    System.out.println("Aurevoir");
+                    GesViews.afficherWarn("Déconnexion...");
                     return;
                 default:
-                    System.out.println("Choix indisponible");
+                    GesViews.afficherErreur("Choix indisponible");
                     break;
             }
         }while(choix!=5);
@@ -53,10 +55,12 @@ public class Main {
     private void gesAjout(){
         int choix;
         do{
+            GesViews.pause(1200);
+            GesViews.clearScreen();
             choix = GesViews.menuAjout();
             switch (choix) {
                 case 1:
-                    System.out.println("=== Ajout d'un burger ===");
+                    GesViews.afficherTitre("Ajout d'un burger");
                     Burger b = new Burger();
                     b.setNom(GesViews.saisirString("Saisir le nom du burger: "));
                     b.setPrix(GesViews.saisirDouble("Saisir le prix du burger: "));
@@ -64,17 +68,17 @@ public class Main {
                     try {
                         b.setImage(ius.uploadImage(imgBurger));
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        GesViews.afficherErreur("Erreur lors de l'upload: " + e.getMessage());
                     }
                     success = bs.createBurger(b);
                     if (success) {
-                        System.out.println("Burger ajouté avec succès !");
+                        GesViews.afficherSuccess("Burger ajouté avec succès !");
                     } else {
-                        System.out.println("Erreur lors de l'ajout du burger.");
+                        GesViews.afficherErreur("Erreur lors de l'ajout du burger.");
                     }
                     break;
                 case 2:
-                    System.out.println("=== Ajout d'un Complement ===");
+                    GesViews.afficherTitre("Ajout d'un Complement");
                     Complement c = new Complement();
                     c.setNom(GesViews.saisirString("Saisir le nom du complement: "));
                     c.setPrix(GesViews.saisirDouble("Saisir le prix du complement: "));
@@ -82,11 +86,11 @@ public class Main {
                     try {
                         c.setImage(ius.uploadImage(imgCmpl));
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        GesViews.afficherErreur("Erreur lors de l'upload: " + e.getMessage());
                     }
                     int choixCat;
                     do {
-                        System.out.println("Choix de la categorie");
+                        System.out.println("=== Choix de la categorie ===");
                         System.out.println("1. Frites");
                         System.out.println("2. Boisson");
                         choixCat = GesViews.saisirInt("Faites votre choix: ");
@@ -95,28 +99,40 @@ public class Main {
                         } else if (choixCat == 2) {
                             c.setCategorie(CategorieComplement.BOISSON);
                         } else {
-                            System.out.println("Choix Incorrect");
+                            GesViews.afficherErreur("Choix incorrect");
                         }
                     } while (choixCat!=1 && choixCat!=2);
                     success = cs.createComplement(c);
                     if (success) {
-                        System.out.println("Complement ajouté avec succès !");
+                        GesViews.afficherSuccess("Complement ajouté avec succès !");
                     } else {
-                        System.out.println("Erreur lors de l'ajout du Complement.");
+                        GesViews.afficherErreur("Erreur lors de l'ajout du complement.");
                     }
                     break;
                 case 3:
-                    System.out.println("=== Ajout d'un menu ===");
+                    GesViews.afficherTitre("Ajout d'un menu");
                     Menu m = new Menu();
                     m.setNom(GesViews.saisirString("Saisir le nom du menu: "));
                     var imgMenu = GesViews.saisirString("Saisir le chemin de l'image");
                     try {
                         m.setImage(ius.uploadImage(imgMenu));
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        GesViews.afficherErreur("Erreur lors de l'upload: " + e.getMessage());
                     }
                     String s;
-                    var montant = m.getMontant();
+                    var montant = 0.0;
+                    Optional<Burger> bu = Optional.empty();
+                    do{
+                        List<Burger> bur = bs.getAllBurger();
+                        GesViews.afficher(bur,"Aucun burger trouvé");
+                        int id = GesViews.saisirInt("Saisir l'id du burger:");
+                        bu = bs.getBurgerById(id);
+                        if(bu.isPresent()){
+                            m.setBurger(bu.get());
+                            montant += bu.get().getPrix();
+                        }
+                    }while(!bu.isPresent());
+                    boolean complementAdded = false;
                     do{
                         List<Complement> cmpl = cs.getAllComplement();
                         GesViews.afficher(cmpl,"Aucun complement trouvé");
@@ -125,12 +141,18 @@ public class Main {
                         if(cm.isPresent()){
                             m.getComplements().add(cm.get());
                             montant += cm.get().getPrix();
-                            m.setMontant(montant);
+                            complementAdded = true;
                         }
-                        do{
-                            s = GesViews.saisirString("Voulez vous saisir un autre complement?[O/N]").toUpperCase();
-                        }while(!s.equals("N") && !s.equals("O"));
+                        if(complementAdded){
+                            do{
+                                s = GesViews.saisirString("Voulez vous saisir un autre complement?[O/N]").toUpperCase();
+                            }while(!s.equals("N") && !s.equals("O"));
+                        } else {
+                            s = "O";
+                            GesViews.afficherErreur("Choix incorrect ! Veuillez sélectionner au moins un complément");
+                        }
                     }while(!s.equals("N"));
+                    m.setMontant(montant);
                     success = ms.createMenu(m);
                     if(success){
                         for (Complement cpl : m.getComplements()) {
@@ -139,25 +161,25 @@ public class Main {
                             menuC.setMenu(m);
                             mcs.createMenuComplement(menuC);
                         }
-                        System.out.println("Menu ajouté avec succès !");
+                        GesViews.afficherSuccess("Menu ajouté avec succès !");
                     }else{
-                        System.out.println("Erreur lors de l'ajout du menu.");
+                        GesViews.afficherErreur("Erreur lors de l'ajout du menu.");
                     }
                     break;
                 case 4:
-                    System.out.println("=== Ajout d'une zone ===");
+                    GesViews.afficherTitre("Ajout d'une zone");
                     Zone z = new Zone();
                     z.setNom(GesViews.saisirString("Saisir le nom de la zone: "));
                     z.setPrixLivraison(GesViews.saisirDouble("Saisir le prix de livraison: "));
                     success = zs.createZone(z);
                     if (success) {
-                        System.out.println("Zone ajoutée avec succès !");
+                        GesViews.afficherSuccess("Zone ajouté avec succès !");
                     } else {
-                        System.out.println("Erreur lors de l'ajout du zone.");
+                        GesViews.afficherErreur("Erreur lors de l'ajout du zone.");
                     }
                     break;
                 case 5:
-                    System.out.println("=== Ajout d'un livreur ===");
+                    GesViews.afficherTitre("Ajout d'un livreur");
                     Livreur l = new Livreur();
                     l.setNomComplet(GesViews.saisirString("Saisir le nom et prenom du livreur: "));
                     l.setTelephone(GesViews.saisirTelephone("Saisir le telephone du livreur: "));
@@ -170,19 +192,34 @@ public class Main {
                     l.setZone(zone.get());
                     success = ls.createLivreur(l);
                     if (success) {
-                        System.out.println("Livreur ajouté avec succès !");
+                        GesViews.afficherSuccess("Livreur ajouté avec succès !");
                     } else {
-                        System.out.println("Erreur lors de l'ajout du livreur.");
+                        GesViews.afficherErreur("Erreur lors de l'ajout du livreur.");
                     }
                     break;
                 case 6:
-                    System.out.println("Retour au menu principale...");
+                    GesViews.afficherTitre("Ajout d'un gestionnaire");
+                    User newUser = new User();
+                    newUser.setNomComplet(GesViews.saisirString("Nom complet: "));
+                    newUser.setTelephone(GesViews.saisirTelephone("Telephone: "));
+                    newUser.setEmail(GesViews.saisirString("Email: "));
+                    newUser.setPassword(GesViews.saisirString("Mot de passe: "));
+                    newUser.setRole(RoleUser.GESTIONNAIRE);
+                    success = logs.signup(newUser);
+                    if (success) {
+                        GesViews.afficherSuccess("Gestionnaire ajouté avec succès !");
+                    } else {
+                        GesViews.afficherErreur("Erreur lors de l'ajout du gestionnaire.");
+                    }
+                    break;
+                case 7:
+                    GesViews.afficherWarn("Retour au menu principale...");
                     break;
                 default:
-                    System.out.println("Choix indisponible");
+                    GesViews.afficherErreur("Choix indisponible");
                     break;
             }
-        }while(choix!=6);
+        }while(choix!=7);
     }
     private void gesUpdate(){
         int choix;
@@ -190,321 +227,426 @@ public class Main {
         String nom;
         String img;
         do{
+            GesViews.pause(1200);
+            GesViews.clearScreen();
             choix = GesViews.menuUpdate();
             switch (choix) {
                 case 1:
+                    GesViews.afficherTitre("modification d'un burger");
+                    List<Burger> burgers = bs.getAllBurger();
+                    GesViews.afficher(burgers,"Aucun burger trouvé");
                     int idBurger = GesViews.saisirInt("Saisir l'id du burger: ");
                     Optional<Burger> burgerOpt = bs.getBurgerById(idBurger);
                     if (burgerOpt.isEmpty()) {
-                        System.out.println("Aucun burger trouve");
+                        GesViews.afficherErreur("Aucun burger trouvé");
                         break;
                     }
                     Burger burger = burgerOpt.get();
                     nom = GesViews.saisirString(
-                        "Nom actuel: " + burger.getNom() + ". Nouveau nom (laisser vide pour garder): "
+                        "Nom actuel: " + burger.getNom() + ". Nouveau nom: "
                     );
-                    if (!nom.isBlank()) burger.setNom(nom);
+                    burger.setNom(nom);
                     prixStr = GesViews.saisirString(
-                        "Montant actuel: " + burger.getPrix() + ". Nouveau montant (laisser vide pour garder): "
+                        "Montant actuel: " + burger.getPrix() + ". Nouveau montant: "
                     );
-                    if (!prixStr.isBlank()) {
-                        try {
-                            burger.setPrix(Double.parseDouble(prixStr));
-                        } catch (NumberFormatException e) {
-                            System.out.println("Montant invalide, valeur inchangée.");
-                        }
+                    try {
+                        burger.setPrix(Double.parseDouble(prixStr));
+                    } catch (NumberFormatException e) {
+                        GesViews.afficherErreur("Montant invalide, valeur inchangée.");
                     }
                     img = GesViews.saisirString(
-                        "Image actuelle: " + burger.getImage() + ". Nouveau chemin (laisser vide pour garder): "
+                        "Image actuelle: " + burger.getImage() + ". Nouveau chemin: "
                     );
-                    if (!img.isBlank()){
-                        try {
-                            burger.setImage(ius.uploadImage(img));
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    } 
+                    try {
+                        burger.setImage(ius.uploadImage(img));
+                    } catch (Exception e) {
+                        GesViews.afficherErreur("Erreur lors de l'upload: " + e.getMessage());
+                    }
                     success = bs.updateBurger(burger);
                     if (success) {
-                        System.out.println("Burger modifié avec succès !");
+                        GesViews.afficherSuccess("Burger modifié avec succès !");
                     } else {
-                        System.out.println("Erreur lors de la modification du burger.");
+                        GesViews.afficherErreur("Erreur lors de la modification du burger.");
                     }
                     break;
                 case 2:
+                    GesViews.afficherTitre("modification d'un complement");
+                    List<Complement> complements = cs.getAllComplement();
+                    GesViews.afficher(complements,"Aucun complement trouvé");
                     int idComplement = GesViews.saisirInt("Saisir l'id du complement: ");
                     Optional<Complement> compOpt = cs.getComplementById(idComplement);
                     if (compOpt.isEmpty()) {
-                        System.out.println("Aucun complement trouvé");
+                        GesViews.afficherErreur("Aucun complement trouvé");
                         break;
                     }
                     Complement comp = compOpt.get();
                     nom = GesViews.saisirString(
-                        "Nom actuel: " + comp.getNom() + ". Nouveau nom (laisser vide pour garder): "
+                        "Nom actuel: " + comp.getNom() + ". Nouveau nom: "
                     );
-                    if (!nom.isBlank()) comp.setNom(nom);
+                    comp.setNom(nom);
                     prixStr = GesViews.saisirString(
-                        "Montant actuel: " + comp.getPrix() + ". Nouveau montant (laisser vide pour garder): "
+                        "Montant actuel: " + comp.getPrix() + ". Nouveau montant: "
                     );
-                    if (!prixStr.isBlank()) {
-                        try {
-                            comp.setPrix(Double.parseDouble(prixStr));
-                        } catch (NumberFormatException e) {
-                            System.out.println("Montant invalide, valeur inchangée.");
-                        }
+                    try {
+                        comp.setPrix(Double.parseDouble(prixStr));
+                    } catch (NumberFormatException e) {
+                        GesViews.afficherErreur("Montant invalide, valeur inchangée.");
                     }
                     img = GesViews.saisirString(
-                        "Image actuelle: " + comp.getImage() + ". Nouveau chemin (laisser vide pour garder): "
+                        "Image actuelle: " + comp.getImage() + ". Nouveau chemin: "
                     );
-                    if (!img.isBlank()){
-                        try {
-                            comp.setImage(ius.uploadImage(img));
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    } 
+                    try {
+                        comp.setImage(ius.uploadImage(img));
+                    } catch (Exception e) {
+                        GesViews.afficherErreur("Erreur lors de l'upload: " + e.getMessage());
+                    }
                     success = cs.updateComplement(comp);
                     if (success) {
-                        System.out.println("Complement modifié avec succès !");
+                        GesViews.afficherSuccess("Complement modifié avec succès !");
                     } else {
-                        System.out.println("Erreur lors de la modification du complement.");
+                        GesViews.afficherErreur("Erreur lors de la modification du complement.");
                     }
                     break;
                 case 3:
+                    GesViews.afficherTitre("modification d'un menu");
+                    List<Menu> menus = ms.getAllMenu();
+                    GesViews.afficher(menus,"Aucun menu trouvé");
                     int idMenu = GesViews.saisirInt("Saisir l'id du menu: ");
                     Optional<Menu> menuOpt = ms.getMenuById(idMenu);
                     if (menuOpt.isEmpty()) {
-                        System.out.println("Aucun menu trouvé");
+                        GesViews.afficherErreur("Aucun menu trouvé");
                         break;
                     }
                     Menu menu = menuOpt.get();
                     nom = GesViews.saisirString(
-                        "Nom actuel: " + menu.getNom() + ". Nouveau nom (laisser vide pour garder): "
+                        "Nom actuel: " + menu.getNom() + ". Nouveau nom: "
                     );
-                    if (!nom.isBlank()) menu.setNom(nom);
+                    menu.setNom(nom);
                     img = GesViews.saisirString(
-                        "Image actuelle: " + menu.getImage() + ". Nouveau chemin (laisser vide pour garder): "
+                        "Image actuelle: " + menu.getImage() + ". Nouveau chemin: "
                     );
-                    if (!img.isBlank()){
-                        try {
-                            menu.setImage(ius.uploadImage(img));
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    } 
+                    try {
+                        menu.setImage(ius.uploadImage(img));
+                    } catch (Exception e) {
+                        GesViews.afficherErreur("Erreur lors de l'upload: " + e.getMessage());
+                    }
                     success = ms.updateMenu(menu);
                     if (success) {
-                        System.out.println("Menu modifié avec succès !");
+                        GesViews.afficherSuccess("Menu modifié avec succès !");
                     } else {
-                        System.out.println("Erreur lors de la modification du menu.");
+                        GesViews.afficherErreur("Erreur lors de la modification du menu.");
                     }
                     break;
                 case 4:
+                    GesViews.afficherTitre("modification d'une zone");
+                    List<Zone> zones = zs.getAllZone();
+                    GesViews.afficher(zones,"Aucune zone trouvée");
                     int idZone = GesViews.saisirInt("Saisir l'id de la zone: ");
                     Optional<Zone> zoneOpt = zs.getZoneById(idZone);
                     if (zoneOpt.isEmpty()) {
-                        System.out.println("Aucune zone trouvée");
+                        GesViews.afficherErreur("Aucune zone trouvée");
                         break;
                     }
                     Zone zone = zoneOpt.get();
                     nom = GesViews.saisirString(
-                        "Nom actuel: " + zone.getNom() + ". Nouveau nom (laisser vide pour garder): "
+                        "Nom actuel: " + zone.getNom() + ". Nouveau nom: "
                     );
-                    if (!nom.isBlank()) zone.setNom(nom);
+                    zone.setNom(nom);
                     prixStr = GesViews.saisirString(
-                        "Montant actuel: " + zone.getPrixLivraison() + ". Nouveau montant (laisser vide pour garder): "
+                        "Montant actuel: " + zone.getPrixLivraison() + ". Nouveau montant: "
                     );
-                    if (!prixStr.isBlank()) {
-                        try {
-                            zone.setPrixLivraison(Double.parseDouble(prixStr));
-                        } catch (NumberFormatException e) {
-                            System.out.println("Montant invalide, valeur inchangée.");
-                        }
+                    try {
+                        zone.setPrixLivraison(Double.parseDouble(prixStr));
+                    } catch (NumberFormatException e) {
+                        GesViews.afficherErreur("Montant invalide, valeur inchangée.");
                     }
                     success = zs.updateZone(zone);
                     if (success) {
-                        System.out.println("Zone modifiée avec succès !");
+                        GesViews.afficherSuccess("Zone modifié avec succès !");
                     } else {
-                        System.out.println("Erreur lors de la modification de la zone.");
+                        GesViews.afficherErreur("Erreur lors de la modification dde la zone.");
                     }
                     break;
                 case 5:
+                    GesViews.afficherTitre("modification d'un livreur");
+                    List<Livreur> livreurs = ls.getAllLivreur();
+                    GesViews.afficher(livreurs,"Aucun livreur trouvé");
                     int idLivreur = GesViews.saisirInt("Saisir l'id du livreur: ");
                     Optional<Livreur> livOpt = ls.getLivreurById(idLivreur);
                     if (livOpt.isEmpty()) {
-                        System.out.println("Aucun livreur trouvé");
+                        GesViews.afficherErreur("Aucun livreur trouvé");
                         break;
                     }
                     Livreur liv = livOpt.get();
                     nom = GesViews.saisirString(
-                        "Nom actuel: " + liv.getNomComplet() + ". Nouveau nom (laisser vide pour garder): "
+                        "Nom actuel: " + liv.getNomComplet() + ". Nouveau nom: "
                     );
-                    if (!nom.isBlank()) liv.setNomComplet(nom);
+                    liv.setNomComplet(nom);
                     String tel = GesViews.saisirTelephone(
-                        "Telephone actuel: " + liv.getTelephone() + ". Nouveau telephone (laisser vide pour garder): "
+                        "Telephone actuel: " + liv.getTelephone() + ". Nouveau telephone: "
                     );
-                    if (!tel.isBlank()) liv.setTelephone(tel);
-                    List<Zone> zones = zs.getAllZone();
-                    GesViews.afficher(zones, "Aucune zone trouvée");
+                    liv.setTelephone(tel);
+                    List<Zone> zones_ = zs.getAllZone();
+                    GesViews.afficher(zones_, "Aucune zone trouvée");
                     String zoneInput = GesViews.saisirString(
-                        "ID de la zone actuelle: " + (liv.getZone() != null ? liv.getZone().getId() : "aucune") +
-                        ". Nouveau ID (laisser vide pour garder) : "
+                        "ID de la zone actuelle: " + liv.getZone().getId() + ". Nouveau ID : "
                     );
-                    if (!zoneInput.isBlank()) {
-                        try {
-                            idZone = Integer.parseInt(zoneInput);
-                            Optional<Zone> zOpt = zs.getZoneById(idZone);
-                            if (zOpt.isPresent()) {
-                                liv.setZone(zOpt.get());
-                            } else {
-                                System.out.println("Zone invalide, valeur inchangée.");
-                            }
-                        } catch (NumberFormatException e) {
-                            System.out.println("ID invalide, valeur inchangée.");
+                    try {
+                        idZone = Integer.parseInt(zoneInput);
+                        Optional<Zone> zOpt = zs.getZoneById(idZone);
+                        if (zOpt.isPresent()) {
+                            liv.setZone(zOpt.get());
+                        } else {
+                            GesViews.afficherErreur("Zone invalide, valeur inchangée.");
                         }
+                    } catch (NumberFormatException e) {
+                        GesViews.afficherErreur("ID invalide, valeur inchangée.");
                     }
+                    success = ls.updateLivreur(liv);
                     if (success) {
-                        System.out.println("Livreur modifié avec succès !");
+                        GesViews.afficherSuccess("Livreur modifié avec succès !");
                     } else {
-                        System.out.println("Erreur lors de la modification du livreur.");
+                        GesViews.afficherErreur("Erreur lors de la modification du livreur.");
                     }
                     break;
                 case 6:
-                    System.out.println("Retour au menu principale...");
+                    GesViews.afficherTitre("modification d'un gestionnaire");
+                    List<User> ges = logs.getAllGes();
+                    GesViews.afficher(ges,"Aucun gestionnaire trouvé");
+                    String mail = GesViews.saisirMail("Saisir le mail du gestionnaire: ");
+                    Optional<User> userOpt = logs.getGesByMail(mail);
+                    if (userOpt.isEmpty()) {
+                        GesViews.afficherErreur("Aucun gestionnaire trouvé");
+                        break;
+                    }
+                    User user = userOpt.get();
+                    nom = GesViews.saisirString(
+                        "Nom actuel: " + user.getNomComplet() + ". Nouveau nom: "
+                    );
+                    user.setNomComplet(nom);
+                    String telephone = GesViews.saisirTelephone(
+                        "Telephone actuel: " + user.getTelephone() + ". Nouveau telephone: "
+                    );
+                    user.setTelephone(telephone);
+                    String email = GesViews.saisirMail(
+                        "Email actuel: " + user.getEmail() + ". Nouvel email: "
+                    );
+                    user.setEmail(email);
+                    String password = GesViews.saisirString(
+                        "Mot de passe actuel: " + user.getPassword() + ". Nouveau mot de passe: "
+                    );
+                    user.setPassword(password);
+                    success = logs.updateGes(user);
+                    if (success) {
+                        GesViews.afficherSuccess("Gestionnaire modifié avec succès !");
+                    } else {
+                        GesViews.afficherErreur("Erreur lors de la modification du gestionnaire.");
+                    }
+                    break;
+                case 7:
+                    GesViews.afficherWarn("Retour au menu principale...");
                     break;
                 default:
-                    System.out.println("Choix indisponible");
+                    GesViews.afficherErreur("Choix indisponible");
                     break;
             }
-        }while(choix!=6);
+        }while(choix!=7);
     }
     private void gesArchive(){
         int choix;
         do{
+            GesViews.pause(1200);
+            GesViews.clearScreen();
             choix = GesViews.menuArchive();
             switch (choix) {
                 case 1:
+                    GesViews.afficherTitre("archivage d'un burger");
+                    List<Burger> burgers = bs.getAllBurger();
+                    GesViews.afficher(burgers,"Aucun burger trouvé");
                     int idBurger = GesViews.saisirInt("Saisir l'id du burger: ");
                     Optional<Burger> burger = bs.getBurgerById(idBurger);
                     if (burger.isEmpty()) {
-                        System.out.println("Aucun burger trouvé");
+                        GesViews.afficherErreur("Aucun burger trouvé");
                         break;
                     }
                     success = bs.archiveBurger(burger.get());
                     if (success) {
-                        System.out.println("Burger archivé avec succès !");
+                        GesViews.afficherSuccess("Burger archivé avec succès !");
                     } else {
-                        System.out.println("Erreur lors de l'archivage du burger.");
+                        GesViews.afficherErreur("Erreur lors de l'archivage du burger.");
                     }
                     break;
                 case 2:
+                    GesViews.afficherTitre("archivage d'un complement");
+                    List<Complement> complements = cs.getAllComplement();
+                    GesViews.afficher(complements,"Aucun complement trouvé");
                     int idComplement = GesViews.saisirInt("Saisir l'id du complement: ");
                     Optional<Complement> comp = cs.getComplementById(idComplement);
                     if (comp.isEmpty()) {
-                        System.out.println("Aucun complement trouvé");
+                        GesViews.afficherErreur("Aucun complement trouvé");
                         break;
                     }
                     success = cs.archiveComplement(comp.get());
                     if (success) {
-                        System.out.println("Complement archivé avec succès !");
+                        GesViews.afficherSuccess("Complement archivé avec succès !");
                     } else {
-                        System.out.println("Erreur lors de l'archivage du complement.");
+                        GesViews.afficherErreur("Erreur lors de l'archivage du complement.");
                     }
                     break;
                 case 3:
+                    GesViews.afficherTitre("archivage d'un menu");
+                    List<Menu> menus = ms.getAllMenu();
+                    GesViews.afficher(menus,"Aucun menu trouvé");
                     int idMenu = GesViews.saisirInt("Saisir l'id du menu: ");
                     Optional<Menu> menu = ms.getMenuById(idMenu);
                     if (menu.isEmpty()) {
-                        System.out.println("Aucun menu trouvé");
+                        GesViews.afficherErreur("Aucun menu trouvé");
                         break;
                     }
                     success = ms.archiveMenu(menu.get());
                     if (success) {
-                        System.out.println("Menu archivé avec succès !");
+                        GesViews.afficherSuccess("Burger archivé avec succès !");
                     } else {
-                        System.out.println("Erreur lors de l'archivage du menu.");
+                        GesViews.afficherErreur("Erreur lors de l'archivage du burger.");
                     }
                     break;
                 case 4:
+                    GesViews.afficherTitre("archivage d'une zone");
+                    List<Zone> zones = zs.getAllZone();
+                    GesViews.afficher(zones,"Aucune zone trouvée"); 
                     int idZone = GesViews.saisirInt("Saisir l'id de la zone: ");
                     Optional<Zone> zone = zs.getZoneById(idZone);
                     if (zone.isEmpty()) {
-                        System.out.println("Aucune zone trouvée");
+                        GesViews.afficherErreur("Aucune zone trouvée");
                         break;
                     }
                     success = zs.archiveZone(zone.get());
                     if (success) {
-                        System.out.println("Zone archivée avec succès !");
+                        GesViews.afficherSuccess("Zone archivé avec succès !");
                     } else {
-                        System.out.println("Erreur lors de l'archivage de la zone.");
+                        GesViews.afficherErreur("Erreur lors de l'archivage du zone.");
                     }
                     break;
                 case 5:
+                    GesViews.afficherTitre("archivage d'un livreur");
+                    List<Livreur> livreurs = ls.getAllLivreur();
+                    GesViews.afficher(livreurs,"Aucun livreur trouvé");
                     int idLivreur = GesViews.saisirInt("Saisir l'id du livreur: ");
                     Optional<Livreur> liv = ls.getLivreurById(idLivreur);
                     if (liv.isEmpty()) {
-                        System.out.println("Aucun livreur trouvé");
+                        GesViews.afficherErreur("Aucun livreur trouvé");
                         break;
                     }
                     success = ls.archiveLivreur(liv.get());
                     if (success) {
-                        System.out.println("Livreur archivé avec succès !");
+                        GesViews.afficherSuccess("Livreur archivé avec succès !");
                     } else {
-                        System.out.println("Erreur lors de l'archivage du livreur.");
+                        GesViews.afficherErreur("Erreur lors de l'archivage du livreur.");
                     }
                     break;
                 case 6:
-                    System.out.println("Retour au menu principale...");
+                    GesViews.afficherTitre("archivage d'un gestionnaire");
+                    List<User> ges = logs.getAllGes();
+                    GesViews.afficher(ges,"Aucun gestionnaire trouvé");
+                    String mail = GesViews.saisirMail("Saisir le mail du gestionnaire: ");
+                    Optional<User> userOpt = logs.getGesByMail(mail);
+                    if (userOpt.isEmpty()) {
+                        GesViews.afficherErreur("Aucun gestionnaire trouvé");
+                        break;
+                    }
+                    User user = userOpt.get();
+                    success = logs.archiveGes(user);
+                    if (success) {
+                        GesViews.afficherSuccess("Gestionnaire archivé avec succès !");
+                    } else {
+                        GesViews.afficherErreur("Erreur lors de l'archivage du gestionnaire.");
+                    }
+                    break;
+                case 7:
+                    GesViews.afficherWarn("Retour au menu principale...");
                     break;
                 default:
-                    System.out.println("Choix indisponible");
+                    GesViews.afficherErreur("Choix indisponible");
                     break;
             }
-        }while(choix!=6);
+        }while(choix!=7);
     }
     private void gesListe(){
         int choix;
         do{
+            GesViews.pause(1200);
+            GesViews.clearScreen();
             choix = GesViews.menuLister();
             switch (choix) {
                 case 1:
+                    GesViews.afficherTitre("liste des burgers");
                     List<Burger> burgers = bs.getAllBurger();
                     GesViews.afficher(burgers,"Aucun burger trouvé");
+                    GesViews.waitForKey();
                     break;
                 case 2:
+                    GesViews.afficherTitre("liste des complements");
                     List<Complement> complements = cs.getAllComplement();
                     GesViews.afficher(complements,"Aucun complement trouvé");
+                    GesViews.waitForKey();
                     break;
                 case 3:
+                    GesViews.afficherTitre("liste des menus");
                     List<Menu> menus = ms.getAllMenu();
-                    for (Menu menu : menus) {
+                    if (menus.isEmpty()) {
+                        GesViews.afficherErreur("Aucun menu trouvé");
+                    }else{
+                        for (Menu menu : menus) {
                         System.out.println(menu);
-                        System.out.println("=== COMPLEMENTS ===");
                         List<Complement> complementsMenu = cs.getComplementsByMenu(menu.getId());
                         menu.setComplements(complementsMenu);
                         complementsMenu.forEach(System.out::println);
                     }
+                    GesViews.waitForKey();
+                    }
                     break;
                 case 4:
+                    GesViews.afficherTitre("liste des zones");
                     List<Zone> zones = zs.getAllZone();
                     GesViews.afficher(zones,"Aucun zone trouvé");
+                    GesViews.waitForKey();
                     break;
                 case 5:
+                    GesViews.afficherTitre("liste des livreurs");
                     List<Livreur> livreurs = ls.getAllLivreur();
-                    GesViews.afficher(livreurs,"Aucun livreur trouvé");
+                    //GesViews.afficher(livreurs,"Aucun livreur trouvé");
+                    if (livreurs.isEmpty()) {
+                        GesViews.afficherErreur("Aucun livreur trouvé");
+                    }else{
+                        for (Livreur livreur : livreurs) {
+                        System.out.println(livreur);
+                        Optional<Zone> zone = zs.getZoneById(livreur.getZone().getId());
+                        zone.ifPresent(livreur::setZone);
+                        System.out.println("Zone: " + livreur.getZone());
+                    }
+                    }
+                    GesViews.waitForKey();
                     break;
-                case 6:
-                    System.out.println("Retour au menu principale...");
+                case 6: 
+                    GesViews.afficherTitre("liste des gestionnaires");
+                    List<User> gestionnaires = logs.getAllGes();
+                    GesViews.afficher(gestionnaires,"Aucun gestionnaire trouvé");
+                    GesViews.waitForKey();
+                    break;
+                case 7:
+                    GesViews.afficherWarn("Retour au menu principale...");
                     break;
                 default:
-                    System.out.println("Choix indisponible");
+                    GesViews.afficherErreur("Choix indisponible");
                     break;
             }
-        }while(choix!=6);
+        }while(choix!=7);
     }
     private void gesAuth(){
         int choix;
         do {
+            GesViews.pause(1200);
+            GesViews.clearScreen();
             choix = GesViews.menuAuthentification();
             switch (choix) {
                 case 1:
@@ -514,39 +656,25 @@ public class Main {
                     }
                     break;
                 case 2:
-                    System.out.println("Ajout d'un gestionnaire ==");
-                    User newUser = new User();
-                    newUser.setNomComplet(GesViews.saisirString("Nom complet: "));
-                    newUser.setTelephone(GesViews.saisirTelephone("Telephone: "));
-                    newUser.setEmail(GesViews.saisirString("Email: "));
-                    newUser.setPassword(GesViews.saisirString("Mot de passe: "));
-                    newUser.setRole(RoleUser.GESTIONNAIRE);
-                    success = logs.signup(newUser);
-                    if (success) {
-                        System.out.println("Gestionnaire ajouté avec succès !");
-                    } else {
-                        System.out.println("Erreur lors de l'ajout du gestionnaire.");
-                    }
-                    break;
-                case 3:
-                    System.out.println("Aurevoir");
+                    GesViews.afficherWarn("Aurevoir...");
                     break;
                 default:
-                    System.out.println("Choix indisponible");
+                    GesViews.afficherErreur("Choix indisponible");
                     break;
             }
         } while (choix != 3);
     }
     private User Login(){
-        System.out.println("=== Authentification ===");
+        GesViews.afficherTitre("Connexion");
         String email = GesViews.saisirString("Email: ");
         String password = GesViews.saisirString("Mot de passe: ");
         Optional<User> user = logs.login(email, password);
         if (user.isPresent() && user.get().getRole() == RoleUser.GESTIONNAIRE) {
-            System.out.println("=== Authentification réussie. Bienvenue " + user.get().getNomComplet() + " ===");
+            var s = "Authentification réussie. Bienvenue " + user.get().getNomComplet();
+            GesViews.afficherSuccess(s);
             return user.get();
         } else {
-            System.out.println("Échec de l'authentification. Veuillez vérifier vos identifiants.");
+            GesViews.afficherErreur("Échec de l'authentification. Veuillez vérifier vos identifiants.");
             return null;
         }
     }

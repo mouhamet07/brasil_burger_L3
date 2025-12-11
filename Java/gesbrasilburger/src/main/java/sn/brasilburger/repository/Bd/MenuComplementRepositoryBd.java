@@ -32,7 +32,7 @@ public class MenuComplementRepositoryBd implements MenuComplementRepository {
             ps.setInt(2, menuC.getMenu().getId());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Erreur lors de l'ajout: " + e.getMessage());
             return false;
         }
     }

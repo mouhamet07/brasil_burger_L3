@@ -36,7 +36,7 @@ public class ComplementRepositoryBd implements ComplementRepository {
             );
             complements =  database.fetchAll(ps, this::toEntity);
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Erreur lors de la recherche: " + e.getMessage());
         }
         return complements;
     }
@@ -51,7 +51,7 @@ public class ComplementRepositoryBd implements ComplementRepository {
             ps.setInt(1, id);
             return database.<Complement>fetch(ps, this::toEntity);
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Erreur lors de la recherche: " + e.getMessage());
         }
         return Optional.empty();
     }
@@ -69,7 +69,7 @@ public class ComplementRepositoryBd implements ComplementRepository {
             ps.setObject(4, complement.getCategorie().name(), java.sql.Types.OTHER);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Erreur lors de l'ajout: " + e.getMessage());
         }
         return false;
     }
@@ -88,7 +88,7 @@ public class ComplementRepositoryBd implements ComplementRepository {
             ps.setInt(5, complement.getId());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Erreur lors de la modification: " + e.getMessage());
         }
         return false;
     }
@@ -103,7 +103,7 @@ public class ComplementRepositoryBd implements ComplementRepository {
             ps.setInt(1, complement.getId());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Erreur lors de l'archivage: " + e.getMessage());
         }
         return false;
     }
@@ -133,7 +133,7 @@ public class ComplementRepositoryBd implements ComplementRepository {
             ps.setInt(1, idMenu);
             complements = database.fetchAll(ps, this::toEntity);
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Erreur lors de la recherche: " + e.getMessage());
         }
         return complements;
     }

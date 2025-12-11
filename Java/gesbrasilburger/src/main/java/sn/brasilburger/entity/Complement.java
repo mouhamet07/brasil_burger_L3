@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
-@ToString
 @Getter
 @Setter
 @AllArgsConstructor
@@ -18,4 +16,8 @@ public class Complement {
     private String image;
     private Boolean etat = true;
     private CategorieComplement categorie;
+    @Override
+    public String toString(){
+        return " Complement->[ID: " + id + ", Nom: " + nom + ", Prix: " + prix + "]";
+    }
 }
