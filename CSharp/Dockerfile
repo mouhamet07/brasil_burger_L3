@@ -22,3 +22,5 @@ EXPOSE $PORT
 
 # Run the first published dll found (works when project name is unknown)
 CMD ["sh", "-c", "dotnet /app/$(ls /app | grep -m1 -E '\\.dll$')"]
+
+
