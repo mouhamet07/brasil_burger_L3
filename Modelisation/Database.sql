@@ -1,15 +1,11 @@
--- =========================================
 -- DATABASE : BRASIL BURGER
 -- SGBD : PostgreSQL
--- =========================================
 
 DROP DATABASE IF EXISTS brasilBurger;
 CREATE DATABASE brasilBurger;
 \c brasilBurger;
 
--- ===============================
 -- ENUMS
--- ===============================
 CREATE TYPE mode_paiement AS ENUM ('OM', 'WAVE');
 CREATE TYPE role_user AS ENUM ('GESTIONNAIRE', 'CLIENT');
 CREATE TYPE type_commande AS ENUM ('SUR_PLACE', 'A_RECUPERER', 'LIVRAISON');
@@ -17,9 +13,7 @@ CREATE TYPE etat_commande AS ENUM ('EN_ATTENTE', 'EN_COURS', 'TERMINEE', 'ANNULE
 CREATE TYPE categorie_complement AS ENUM ('FRITES', 'BOISSON');
 CREATE TYPE type_commande_item AS ENUM ('BURGER', 'MENU', 'COMPLEMENT');
 
--- ===============================
 -- TABLES
--- ===============================
 
 -- User
 CREATE TABLE "user" (
@@ -116,14 +110,11 @@ CREATE TABLE paiement (
     commande_id INT NOT NULL UNIQUE REFERENCES commande(id) ON DELETE CASCADE
 );
 
--- ===============================
 -- INDEXES
--- ===============================
 CREATE INDEX idx_commande_client ON commande(client_id);
 CREATE INDEX idx_commande_etat ON commande(etat);
 CREATE INDEX idx_commande_date ON commande(dateCommande);
 CREATE INDEX idx_commande_type ON commande(type);
 CREATE INDEX idx_commande_zone ON commande(zone_id);
-
 CREATE INDEX idx_item_commande ON commande_item(commande_id);
 CREATE INDEX idx_item_type ON commande_item(type);
