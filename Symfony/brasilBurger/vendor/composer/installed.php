@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '06fa5e62065ed0d8ba925fe1b21861107f6a1b4d',
+        'reference' => 'af62f039850b1bd77703b44ce65b2c5cee4f0061',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '06fa5e62065ed0d8ba925fe1b21861107f6a1b4d',
+            'reference' => 'af62f039850b1bd77703b44ce65b2c5cee4f0061',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -624,7 +624,7 @@
             'type' => 'symfony-bundle',
             'install_path' => __DIR__ . '/../symfony/debug-bundle',
             'aliases' => array(),
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'symfony/dependency-injection' => array(
             'pretty_version' => 'v8.0.2',
@@ -650,15 +650,6 @@
             'reference' => 'f57b37e61ab378bca98ffa038a786a24d574bec6',
             'type' => 'symfony-bridge',
             'install_path' => __DIR__ . '/../symfony/doctrine-bridge',
-            'aliases' => array(),
-            'dev_requirement' => false,
-        ),
-        'symfony/doctrine-messenger' => array(
-            'pretty_version' => 'v8.0.1',
-            'version' => '8.0.1.0',
-            'reference' => '9d833a2f48966629956577a4acccbccfe37e9be3',
-            'type' => 'symfony-messenger-bridge',
-            'install_path' => __DIR__ . '/../symfony/doctrine-messenger',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
@@ -712,15 +703,6 @@
             'provided' => array(
                 0 => '2.0|3.0',
             ),
-        ),
-        'symfony/expression-language' => array(
-            'pretty_version' => 'v8.0.0',
-            'version' => '8.0.0.0',
-            'reference' => '43f520aef59d2fd089662d721b39e0101bb69232',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../symfony/expression-language',
-            'aliases' => array(),
-            'dev_requirement' => false,
         ),
         'symfony/filesystem' => array(
             'pretty_version' => 'v8.0.1',
@@ -900,16 +882,13 @@
             'dev_requirement' => false,
         ),
         'symfony/polyfill-ctype' => array(
+            'pretty_version' => 'v1.33.0',
+            'version' => '1.33.0.0',
+            'reference' => 'a3cc8b044a6ea513310cbd48ef7333b384945638',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/polyfill-ctype',
+            'aliases' => array(),
             'dev_requirement' => false,
-            'replaced' => array(
-                0 => '*',
-            ),
-        ),
-        'symfony/polyfill-iconv' => array(
-            'dev_requirement' => false,
-            'replaced' => array(
-                0 => '*',
-            ),
         ),
         'symfony/polyfill-intl-grapheme' => array(
             'pretty_version' => 'v1.33.0',
@@ -956,53 +935,14 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
-        'symfony/polyfill-php72' => array(
-            'dev_requirement' => false,
-            'replaced' => array(
-                0 => '*',
-            ),
-        ),
-        'symfony/polyfill-php73' => array(
-            'dev_requirement' => false,
-            'replaced' => array(
-                0 => '*',
-            ),
-        ),
-        'symfony/polyfill-php74' => array(
-            'dev_requirement' => false,
-            'replaced' => array(
-                0 => '*',
-            ),
-        ),
-        'symfony/polyfill-php80' => array(
-            'dev_requirement' => false,
-            'replaced' => array(
-                0 => '*',
-            ),
-        ),
-        'symfony/polyfill-php81' => array(
-            'dev_requirement' => false,
-            'replaced' => array(
-                0 => '*',
-            ),
-        ),
-        'symfony/polyfill-php82' => array(
-            'dev_requirement' => false,
-            'replaced' => array(
-                0 => '*',
-            ),
-        ),
-        'symfony/polyfill-php83' => array(
-            'dev_requirement' => false,
-            'replaced' => array(
-                0 => '*',
-            ),
-        ),
         'symfony/polyfill-php84' => array(
+            'pretty_version' => 'v1.33.0',
+            'version' => '1.33.0.0',
+            'reference' => 'd8ced4d875142b6a7426000426b8abc631d6b191',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/polyfill-php84',
+            'aliases' => array(),
             'dev_requirement' => false,
-            'replaced' => array(
-                0 => '*',
-            ),
         ),
         'symfony/polyfill-php85' => array(
             'pretty_version' => 'v1.33.0',
@@ -1248,7 +1188,7 @@
             'type' => 'symfony-bundle',
             'install_path' => __DIR__ . '/../symfony/web-profiler-bundle',
             'aliases' => array(),
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'symfony/yaml' => array(
             'pretty_version' => 'v8.0.1',

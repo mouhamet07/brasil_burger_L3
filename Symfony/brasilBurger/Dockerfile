@@ -16,10 +16,15 @@ COPY . .
 RUN composer install --no-dev --optimize-autoloader
 
 # Permissions Symfony
-RUN mkdir -p var && chmod -R 777 var
+RUN mkdir -p var/cache var/log var/sessions \
+    && chmod -R 777 var
 
-# Render écoute ici
+# Vider et réchauffer le cache pour éviter cache:clear errors
+RUN php bin/console cache:clear --no-warmup \
+    && php bin/console cache:warmup
+
+# Exposer le port pour Render
 EXPOSE 10000
 
-# Serveur HTTP
+# Serveur HTTP intégré
 CMD ["php", "-S", "0.0.0.0:10000", "-t", "public"]
