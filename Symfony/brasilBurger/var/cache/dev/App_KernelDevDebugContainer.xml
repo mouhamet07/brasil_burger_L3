@@ -78,7 +78,7 @@
     </parameter>
     <parameter key="kernel.charset">UTF-8</parameter>
     <parameter key="kernel.container_class">App_KernelDevDebugContainer</parameter>
-    <parameter key="kernel.share_dir">C:\Users\mouha\Desktop\Brasil_Burger\brasil_burger_L3\Symfony\brasilBurger/var/share/dev</parameter>
+    <parameter key="kernel.share_dir">C:\Users\mouha\Desktop\Brasil_Burger\brasil_burger_L3\Symfony\brasilBurger\var\share\dev</parameter>
     <parameter key=".container.known_envs" type="collection">
       <parameter>dev</parameter>
       <parameter>test</parameter>
@@ -352,6 +352,10 @@
       <tag name="controller.service_arguments"/>
       <tag name="routing.route_loader"/>
     </service>
+    <service id="App\Controller\HomeController" class="App\Controller\HomeController" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+      <tag name="routing.controller"/>
+    </service>
     <service id="argument_metadata_factory" class="Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadataFactory"/>
     <service id="argument_resolver.backed_enum_resolver" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\BackedEnumValueResolver">
       <tag name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\BackedEnumValueResolver" priority="100">controller.argument_value_resolver</tag>
@@ -474,7 +478,7 @@
       </argument>
     </service>
     <service id="http_cache.store" class="Symfony\Component\HttpKernel\HttpCache\Store">
-      <argument>C:\Users\mouha\Desktop\Brasil_Burger\brasil_burger_L3\Symfony\brasilBurger/var/share/dev/http_cache</argument>
+      <argument>C:\Users\mouha\Desktop\Brasil_Burger\brasil_burger_L3\Symfony\brasilBurger\var\share\dev/http_cache</argument>
     </service>
     <service id="url_helper" class="Symfony\Component\HttpFoundation\UrlHelper">
       <argument type="service" id="request_stack"/>
@@ -1576,7 +1580,7 @@
       <tag name="monolog.logger" channel="cache"/>
       <argument/>
       <argument>0</argument>
-      <argument>C:\Users\mouha\Desktop\Brasil_Burger\brasil_burger_L3\Symfony\brasilBurger/var/share/dev/pools/app</argument>
+      <argument>C:\Users\mouha\Desktop\Brasil_Burger\brasil_burger_L3\Symfony\brasilBurger\var\share\dev/pools/app</argument>
       <argument type="service" id="cache.default_marshaller" on-invalid="ignore"/>
       <call method="setLogger">
         <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
@@ -3536,7 +3540,9 @@
     </service>
     <service id="routing.loader.attribute.services" class="Symfony\Component\Routing\Loader\AttributeServicesLoader">
       <tag name="routing.loader" priority="-10"/>
-      <argument type="collection"/>
+      <argument type="collection">
+        <argument>App\Controller\HomeController</argument>
+      </argument>
     </service>
     <service id="routing.loader.attribute.directory" class="Symfony\Component\Routing\Loader\AttributeDirectoryLoader">
       <tag name="routing.loader" priority="-10"/>
@@ -7539,6 +7545,8 @@
       <argument type="service" id="maker.file_manager"/>
       <argument type="service" id="maker.generator"/>
     </service>
+    <service id=".instanceof.App\Controller\HomeController.0.App\Controller\HomeController" class="App\Controller\HomeController" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Controller\HomeController" class="App\Controller\HomeController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".service_locator.ryAvHi4" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -8864,6 +8872,7 @@
       <call method="allowControllers">
         <argument type="collection">
           <argument>App\Kernel</argument>
+          <argument>App\Controller\HomeController</argument>
           <argument>Doctrine\Bundle\DoctrineBundle\Controller\ProfilerController</argument>
         </argument>
       </call>
@@ -10059,7 +10068,7 @@
     <service id="cache.app.recorder_inner" class="Symfony\Component\Cache\Adapter\FilesystemAdapter">
       <argument>wk8SjF-bS1</argument>
       <argument>0</argument>
-      <argument>C:\Users\mouha\Desktop\Brasil_Burger\brasil_burger_L3\Symfony\brasilBurger/var/share/dev/pools/app</argument>
+      <argument>C:\Users\mouha\Desktop\Brasil_Burger\brasil_burger_L3\Symfony\brasilBurger\var\share\dev/pools/app</argument>
       <argument type="service" id="cache.default_marshaller" on-invalid="ignore"/>
       <call method="setLogger">
         <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
@@ -10108,7 +10117,7 @@
     <service id="cache.messenger.restart_workers_signal.recorder_inner" class="Symfony\Component\Cache\Adapter\FilesystemAdapter">
       <argument>cb8xabCk4v</argument>
       <argument>0</argument>
-      <argument>C:\Users\mouha\Desktop\Brasil_Burger\brasil_burger_L3\Symfony\brasilBurger/var/share/dev/pools/app</argument>
+      <argument>C:\Users\mouha\Desktop\Brasil_Burger\brasil_burger_L3\Symfony\brasilBurger\var\share\dev/pools/app</argument>
       <argument type="service" id="cache.default_marshaller" on-invalid="ignore"/>
       <call method="setLogger">
         <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
@@ -10117,7 +10126,7 @@
     <service id="cache.http_client.pool.recorder_inner" class="Symfony\Component\Cache\Adapter\FilesystemAdapter">
       <argument>yy4MIjpd4m</argument>
       <argument>0</argument>
-      <argument>C:\Users\mouha\Desktop\Brasil_Burger\brasil_burger_L3\Symfony\brasilBurger/var/share/dev/pools/app</argument>
+      <argument>C:\Users\mouha\Desktop\Brasil_Burger\brasil_burger_L3\Symfony\brasilBurger\var\share\dev/pools/app</argument>
       <argument type="service" id="cache.default_marshaller" on-invalid="ignore"/>
       <call method="setLogger">
         <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
