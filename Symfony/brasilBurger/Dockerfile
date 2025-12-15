@@ -13,7 +13,7 @@ WORKDIR /app
 COPY . .
 
 # Installer dépendances Symfony (prod)
-RUN composer install --no-dev --optimize-autoloader
+RUN composer install --optimize-autoloader
 
 # Permissions Symfony
 RUN mkdir -p var/cache var/log var/sessions \
