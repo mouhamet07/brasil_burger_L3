@@ -1,0 +1,9 @@
+# Ignore Symfony vendor and cache files on branches that don't need them (e.g. CSharp branch)
+/Symfony/brasilBurger/vendor/
+/Symfony/brasilBurger/var/
+
+# Ignore other common machine-generated files
+/.vscode/
+/.idea/
+*.log
+node_modules/
