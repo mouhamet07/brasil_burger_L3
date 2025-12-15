@@ -26,5 +26,5 @@ RUN php bin/console cache:clear --no-warmup \
 # Exposer le port pour Render
 EXPOSE 10000
 
-# Serveur HTTP intégré
+# Serveur HTTP intégrée
 CMD ["php", "-S", "0.0.0.0:10000", "-t", "public"]
