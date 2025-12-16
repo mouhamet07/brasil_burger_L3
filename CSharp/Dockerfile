@@ -1,26 +1,29 @@
-# Multi-stage Dockerfile for ASP.NET Core app (suitable for Render)
-# Build stage
+# Stage 1: Build
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Copy everything and restore
+# Copier les fichiers du projet
 COPY . ./
+
+# Restaurer les dépendances
 RUN dotnet restore
 
-# Publish
+# Publier l'application en release (framework-dependent)
 RUN dotnet publish -c Release -o /app/publish
 
-# Runtime stage
+# Stage 2: Runtime
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
 
-ENV PORT 8080
+# Configurer le port pour Render
+ENV PORT=8080
 ENV ASPNETCORE_URLS=http://+:$PORT
 
+# Copier les fichiers publiés
 COPY --from=build /app/publish ./
+
+# Exposer le port
 EXPOSE $PORT
 
-# Run the first published dll found (works when project name is unknown)
-CMD ["sh", "-c", "dotnet /app/$(ls /app | grep -m1 -E '\\.dll$')"]
-
-
+# Lancer l'application (spécifie explicitement le DLL)
+CMD ["dotnet", "brasilBurger.dll"]
