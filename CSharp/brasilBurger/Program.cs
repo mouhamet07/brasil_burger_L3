@@ -1,4 +1,10 @@
+using brasilBurger.Data;
+using brasilBurger.Services;
+using brasilBurger.Services.Impl;
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<AppDbContext>();
+builder.Services.AddScoped<ICatalogueServices, CatalogueServices>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -22,6 +28,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Catalogue}/{action=Index}/{id?}");
 
 app.Run();

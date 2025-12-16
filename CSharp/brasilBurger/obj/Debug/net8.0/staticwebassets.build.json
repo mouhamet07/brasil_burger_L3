@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "OWuEQIN2NH7kW+2dathQ9FZRPwWmLlEk5lIU5ahANUg=",
+  "Hash": "g9fhhhz+2VMAUDbpM/mTmBiRbNaz1lkTBygRFUFRjJE=",
   "Source": "brasilBurger",
   "BasePath": "_content/brasilBurger",
   "Mode": "Default",
@@ -53,6 +53,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\mouha\\Desktop\\Brasil_Burger\\brasil_burger_L3\\CSharp\\brasilBurger\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\brasilBurger.bundle.scp.css"
+    },
+    {
+      "Identity": "C:\\Users\\mouha\\Desktop\\Brasil_Burger\\brasil_burger_L3\\CSharp\\brasilBurger\\wwwroot\\css\\base.css",
+      "SourceId": "brasilBurger",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\mouha\\Desktop\\Brasil_Burger\\brasil_burger_L3\\CSharp\\brasilBurger\\wwwroot\\",
+      "BasePath": "_content/brasilBurger",
+      "RelativePath": "css/base.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\base.css"
     },
     {
       "Identity": "C:\\Users\\mouha\\Desktop\\Brasil_Burger\\brasil_burger_L3\\CSharp\\brasilBurger\\wwwroot\\css\\site.css",
