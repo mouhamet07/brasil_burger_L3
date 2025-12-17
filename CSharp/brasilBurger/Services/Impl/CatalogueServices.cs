@@ -15,7 +15,6 @@ namespace brasilBurger.Services.Impl
         {
             if (page < 1) page = 1;
             int offset = (page - 1) * pageSize;
-
             var burgers = _context.Burgers.Select(b => new CatalogueItemVM
             {
                 Id = b.Id,
@@ -24,7 +23,6 @@ namespace brasilBurger.Services.Impl
                 Image = b.Image,
                 Type = "Burger"
             });
-
             var menus = _context.Menus.Select(m => new CatalogueItemVM
             {
                 Id = m.Id,
@@ -33,34 +31,61 @@ namespace brasilBurger.Services.Impl
                 Image = m.Image,
                 Type = "Menu"
             });
-
             var allItems = burgers.Concat(menus);
-
-            // Appliquer le filtre AVANT la pagination
             if (!string.IsNullOrEmpty(type) && type.ToLower() != "all")
                 allItems = allItems.Where(c => c.Type.ToLower() == type.ToLower());
-
             return allItems
                 .OrderBy(c => c.Id)
                 .Skip(offset)
                 .Take(pageSize)
                 .ToList();
         }
-
         public int CountTotal(string type = "all")
         {
             var burgersCount = _context.Burgers.Count();
             var menusCount = _context.Menus.Count();
-
             type = type?.ToLower() ?? "all";
-
         if (type == "burger")
             return burgersCount;
         else if (type == "menu")
             return menusCount;
         else
             return burgersCount + menusCount;
-
+        }
+        public CatalogueItemVM GetItemById(int id, string type)
+        {
+            type = type?.ToLower();
+            if (type == "burger")
+            {
+                var burger = _context.Burgers.Find(id);
+                if (burger == null) return null;
+                return new CatalogueItemVM
+                {
+                    Id = burger.Id,
+                    Nom = burger.Nom,
+                    Prix = burger.Prix,
+                    Image = burger.Image,
+                    Type = "Burger"
+                };
+            }
+            else if (type == "menu")
+            {
+                var menu = _context.Menus.Find(id);
+                if (menu == null) return null;
+                return new CatalogueItemVM
+                {
+                    Id = menu.Id,
+                    Nom = menu.Nom,
+                    Prix = menu.Montant,
+                    Image = menu.Image,
+                    Type = "Menu"
+                };
+            }
+            return null;
+        }
+        public List<Complement> GetComplements()
+        {
+            return _context.Complements.ToList();
         }
     }
 }

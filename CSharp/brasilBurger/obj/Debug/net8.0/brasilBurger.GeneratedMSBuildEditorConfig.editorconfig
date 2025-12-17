@@ -18,6 +18,10 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\mouha\Desktop\Brasil_Burger\brasil_burger_L3\CSharp\brasilBurger
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/Users/mouha/Desktop/Brasil_Burger/brasil_burger_L3/CSharp/brasilBurger/Views/Catalogue/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0YWxvZ3VlXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/mouha/Desktop/Brasil_Burger/brasil_burger_L3/CSharp/brasilBurger/Views/Catalogue/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0YWxvZ3VlXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

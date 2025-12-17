@@ -23,5 +23,23 @@ namespace brasilBurger.Controllers
             ViewBag.SelectedType = type;
             return View(catalogue);
         }
+        [HttpGet]
+        public IActionResult Details(int id, string type)
+        {
+            var item = _catalogueServices.GetItemById(id, type);
+            var complements = _catalogueServices.GetComplements();
+            var similaires = _catalogueServices.GetCatalogue(1, type)
+                .Where(i => i.Id != id)
+                .Where(i => i.Type == type)
+                .ToList();
+            ViewBag.Complements = complements;
+            ViewBag.Similaires = similaires;
+            if (item == null)
+            {
+                _logger.LogWarning("Item not found: Id={Id}, Type={Type}", id, type);
+                return NotFound();
+            }
+            return View(item);
+        }
     }
 }

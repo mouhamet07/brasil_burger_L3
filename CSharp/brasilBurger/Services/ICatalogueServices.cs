@@ -6,5 +6,7 @@ namespace brasilBurger.Services
     {
         List<CatalogueItemVM> GetCatalogue(int page, string type = "all");
         int CountTotal(string type = "all");
+        CatalogueItemVM GetItemById(int id, string type);
+        List<Complement> GetComplements();
     }
 }
