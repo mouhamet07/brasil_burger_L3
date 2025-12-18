@@ -5,6 +5,9 @@ using brasilBurger.Services.Impl;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>();
 builder.Services.AddScoped<ICatalogueServices, CatalogueServices>();
+builder.Services.AddScoped<ICommandeServices, CommandeServices>();
+builder.Services.AddScoped<IPaiementServices, PaiementServices>();
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

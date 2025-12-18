@@ -18,12 +18,11 @@ namespace brasilBurger.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            /* ===================== USER ===================== */
+            //User
             modelBuilder.Entity<User>(entity =>
             {
                 entity.ToTable("user");
                 entity.HasKey(u => u.Id);
-
                 entity.Property(u => u.Id).HasColumnName("id");
                 entity.Property(u => u.NomComplet).HasColumnName("nom_complet");
                 entity.Property(u => u.Telephone).HasColumnName("telephone");
@@ -32,8 +31,7 @@ namespace brasilBurger.Data
                 entity.Property(u => u.Role).HasColumnName("role").HasConversion<string>();
                 entity.Property(u => u.Etat).HasColumnName("etat");
             });
-
-            /* ===================== ZONE ===================== */
+            //Zone
             modelBuilder.Entity<Zone>(entity =>
             {
                 entity.ToTable("zone");
@@ -45,7 +43,7 @@ namespace brasilBurger.Data
                 entity.Property(z => z.Etat).HasColumnName("etat");
             });
 
-            /* ===================== LIVREUR ===================== */
+            //Livreur
             modelBuilder.Entity<Livreur>(entity =>
             {
                 entity.ToTable("livreur");
@@ -58,7 +56,7 @@ namespace brasilBurger.Data
                 entity.Property(l => l.Etat).HasColumnName("etat");
             });
 
-            /* ===================== BURGER ===================== */
+            //Burger
             modelBuilder.Entity<Burger>(entity =>
             {
                 entity.ToTable("burger");
@@ -71,7 +69,7 @@ namespace brasilBurger.Data
                 entity.Property(b => b.Etat).HasColumnName("etat");
             });
 
-            /* ===================== MENU ===================== */
+            //Menu
             modelBuilder.Entity<Menu>(entity =>
             {
                 entity.ToTable("menu");
@@ -85,7 +83,7 @@ namespace brasilBurger.Data
                 entity.Property(m => m.BurgerId).HasColumnName("burger_id");
             });
 
-            /* ===================== COMPLEMENT ===================== */
+            //Complement
             modelBuilder.Entity<Complement>(entity =>
             {
                 entity.ToTable("complement");
@@ -99,7 +97,7 @@ namespace brasilBurger.Data
                 entity.Property(c => c.Categorie).HasColumnName("categorie").HasConversion<string>();
             });
 
-            /* ===================== MENU_COMPLEMENT ===================== */
+            //MenuComplement
             modelBuilder.Entity<MenuComplement>(entity =>
             {
                 entity.ToTable("menu_complement");
@@ -109,7 +107,7 @@ namespace brasilBurger.Data
                 entity.Property(mc => mc.ComplementId).HasColumnName("complement_id");
             });
 
-            /* ===================== COMMANDE ===================== */
+            //Commande
             modelBuilder.Entity<Commande>(entity =>
             {
                 entity.ToTable("commande");
@@ -117,7 +115,10 @@ namespace brasilBurger.Data
 
                 entity.Property(c => c.Id).HasColumnName("id");
                 entity.Property(c => c.DateCommande).HasColumnName("datecommande");
-                entity.Property(c => c.Etat).HasColumnName("etat").HasConversion<string>();
+                entity.Property(c => c.Etat).HasColumnName("etat").HasConversion(
+                    v => v.ToString(),
+                    v => (EtatCommande)Enum.Parse(typeof(EtatCommande), v
+                ));
                 entity.Property(c => c.Type).HasColumnName("type").HasConversion<string>();
                 entity.Property(c => c.MontantTotal).HasColumnName("montant_total");
                 entity.Property(c => c.ClientId).HasColumnName("client_id");
@@ -125,7 +126,7 @@ namespace brasilBurger.Data
                 entity.Property(c => c.LivreurId).HasColumnName("livreur_id");
             });
 
-            /* ===================== COMMANDE ITEM ===================== */
+            //CommandeItem
             modelBuilder.Entity<CommandeItem>(entity =>
             {
                 entity.ToTable("commande_item");
@@ -146,7 +147,7 @@ namespace brasilBurger.Data
             });
 
 
-            /* ===================== PAIEMENT ===================== */
+            //Paiement
             modelBuilder.Entity<Paiement>(entity =>
             {
                 entity.ToTable("paiement");

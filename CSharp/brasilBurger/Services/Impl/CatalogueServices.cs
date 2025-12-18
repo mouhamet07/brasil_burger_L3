@@ -87,5 +87,27 @@ namespace brasilBurger.Services.Impl
         {
             return _context.Complements.ToList();
         }
+        public List<Complement> GetComplementsByMenu(int id)
+        {
+            return _context.MenuComplements
+                .Where(mc => mc.MenuId == id)
+                .Join(
+                    _context.Complements,
+                    mc => mc.ComplementId,
+                    c => c.Id,
+                    (mc, c) => c
+                )
+                .ToList();
+        }
+        public List<Zone> GetZones()
+        {
+            return _context.Zones
+            .Where(z => z.Etat == true)
+            .ToList();
+        }
+        public Complement GetComplementById(int id)
+        {
+            return _context.Complements.Find(id);
+        }
     }
 }

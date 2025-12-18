@@ -32,6 +32,11 @@ namespace brasilBurger.Controllers
                 .Where(i => i.Id != id)
                 .Where(i => i.Type == type)
                 .ToList();
+            if(type.ToLower() == "menu")
+            {
+                var menuComplements = _catalogueServices.GetComplementsByMenu(id);
+                ViewBag.MenuComplements = menuComplements;
+            }
             ViewBag.Complements = complements;
             ViewBag.Similaires = similaires;
             if (item == null)
