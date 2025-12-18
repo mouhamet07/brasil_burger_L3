@@ -9,14 +9,14 @@
             <form method="get" class="row g-3 align-items-end">
                 <div class="col-12 col-md-5">
                     <label class="form-label">Type de produit</label>
-                    <select name="type" class="form-select" onchange="this.form.submit()">
+                    <select name="type" class="form-select" >
                         <option value="all" selected="@(ViewBag.SelectedType == "all" ? "selected" : null)">Tous</option>
                         <option value="burger" selected="@(ViewBag.SelectedType == "burger" ? "selected" : null)">Burger</option>
                         <option value="menu" selected="@(ViewBag.SelectedType == "menu" ? "selected" : null)">Menu</option>
                     </select>
                 </div>
                 <div class="col-12 col-md-3 d-grid">
-                    <button class="btn btn-orange">
+                    <button type="submit" class="btn btn-orange">
                         <i class="fa fa-filter"></i> Filtrer
                     </button>
                 </div>

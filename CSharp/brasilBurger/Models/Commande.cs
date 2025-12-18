@@ -26,7 +26,6 @@ namespace brasilBurger.Models
         public Zone Zone { get; set; }
         public int? LivreurId { get; set; }
         public Livreur Livreur { get; set; }
-        public ICollection<CommandeItem> Items { get; set; }
         public Paiement PaiementC { get; set; }
         public ICollection<CommandeItem> CommandeItems { get; set; } = new List<CommandeItem>();
     }

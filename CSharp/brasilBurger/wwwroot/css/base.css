@@ -121,6 +121,10 @@ body {
     border-radius: 1rem; 
 }
 .status-pending { 
+    background-color: var(--third); 
+    color: var(--light); 
+}
+.status-waiting { 
     background-color: var(--second); 
     color: var(--light); 
 }

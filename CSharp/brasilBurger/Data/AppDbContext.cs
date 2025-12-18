@@ -36,45 +36,38 @@ namespace brasilBurger.Data
             {
                 entity.ToTable("zone");
                 entity.HasKey(z => z.Id);
-
                 entity.Property(z => z.Id).HasColumnName("id");
                 entity.Property(z => z.Nom).HasColumnName("nom");
                 entity.Property(z => z.PrixLivraison).HasColumnName("prix_livraison");
                 entity.Property(z => z.Etat).HasColumnName("etat");
             });
-
             //Livreur
             modelBuilder.Entity<Livreur>(entity =>
             {
                 entity.ToTable("livreur");
                 entity.HasKey(l => l.Id);
-
                 entity.Property(l => l.Id).HasColumnName("id");
                 entity.Property(l => l.NomComplet).HasColumnName("nom_complet");
                 entity.Property(l => l.Telephone).HasColumnName("telephone");
                 entity.Property(l => l.ZoneId).HasColumnName("zone_id");
                 entity.Property(l => l.Etat).HasColumnName("etat");
             });
-
             //Burger
             modelBuilder.Entity<Burger>(entity =>
             {
                 entity.ToTable("burger");
                 entity.HasKey(b => b.Id);
-
                 entity.Property(b => b.Id).HasColumnName("id");
                 entity.Property(b => b.Nom).HasColumnName("nom");
                 entity.Property(b => b.Prix).HasColumnName("prix");
                 entity.Property(b => b.Image).HasColumnName("image");
                 entity.Property(b => b.Etat).HasColumnName("etat");
             });
-
             //Menu
             modelBuilder.Entity<Menu>(entity =>
             {
                 entity.ToTable("menu");
                 entity.HasKey(m => m.Id);
-
                 entity.Property(m => m.Id).HasColumnName("id");
                 entity.Property(m => m.Nom).HasColumnName("nom");
                 entity.Property(m => m.Image).HasColumnName("image");
@@ -82,13 +75,11 @@ namespace brasilBurger.Data
                 entity.Property(m => m.Montant).HasColumnName("montant");
                 entity.Property(m => m.BurgerId).HasColumnName("burger_id");
             });
-
             //Complement
             modelBuilder.Entity<Complement>(entity =>
             {
                 entity.ToTable("complement");
                 entity.HasKey(c => c.Id);
-
                 entity.Property(c => c.Id).HasColumnName("id");
                 entity.Property(c => c.Nom).HasColumnName("nom");
                 entity.Property(c => c.Prix).HasColumnName("prix");
@@ -96,23 +87,19 @@ namespace brasilBurger.Data
                 entity.Property(c => c.Etat).HasColumnName("etat");
                 entity.Property(c => c.Categorie).HasColumnName("categorie").HasConversion<string>();
             });
-
             //MenuComplement
             modelBuilder.Entity<MenuComplement>(entity =>
             {
                 entity.ToTable("menu_complement");
                 entity.HasKey(mc => new { mc.MenuId, mc.ComplementId });
-
                 entity.Property(mc => mc.MenuId).HasColumnName("menu_id");
                 entity.Property(mc => mc.ComplementId).HasColumnName("complement_id");
             });
-
             //Commande
             modelBuilder.Entity<Commande>(entity =>
             {
                 entity.ToTable("commande");
                 entity.HasKey(c => c.Id);
-
                 entity.Property(c => c.Id).HasColumnName("id");
                 entity.Property(c => c.DateCommande).HasColumnName("datecommande");
                 entity.Property(c => c.Etat).HasColumnName("etat").HasConversion(
@@ -125,34 +112,27 @@ namespace brasilBurger.Data
                 entity.Property(c => c.ZoneId).HasColumnName("zone_id");
                 entity.Property(c => c.LivreurId).HasColumnName("livreur_id");
             });
-
             //CommandeItem
             modelBuilder.Entity<CommandeItem>(entity =>
             {
                 entity.ToTable("commande_item");
                 entity.HasKey(ci => ci.Id);
-
                 entity.Property(ci => ci.Id).HasColumnName("id");
                 entity.Property(ci => ci.CommandeId).HasColumnName("commande_id");
-
                 entity.HasOne(ci => ci.Commande)
                     .WithMany(c => c.CommandeItems)
                     .HasForeignKey(ci => ci.CommandeId)
                     .OnDelete(DeleteBehavior.Cascade);
-
                 entity.Property(ci => ci.Type).HasColumnName("type").HasConversion<string>();
                 entity.Property(ci => ci.ProduitId).HasColumnName("produit_id");
                 entity.Property(ci => ci.Quantite).HasColumnName("quantite");
                 entity.Property(ci => ci.PrixUnitaire).HasColumnName("prix_unitaire");
             });
-
-
             //Paiement
             modelBuilder.Entity<Paiement>(entity =>
             {
                 entity.ToTable("paiement");
                 entity.HasKey(p => p.Id);
-
                 entity.Property(p => p.Id).HasColumnName("id");
                 entity.Property(p => p.DatePaiement).HasColumnName("date_paiement");
                 entity.Property(p => p.Montant).HasColumnName("montant");
@@ -160,7 +140,6 @@ namespace brasilBurger.Data
                 entity.Property(p => p.CommandeId).HasColumnName("commande_id");
             });
         }
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

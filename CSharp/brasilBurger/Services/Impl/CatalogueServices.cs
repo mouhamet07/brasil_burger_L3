@@ -35,7 +35,7 @@ namespace brasilBurger.Services.Impl
             if (!string.IsNullOrEmpty(type) && type.ToLower() != "all")
                 allItems = allItems.Where(c => c.Type.ToLower() == type.ToLower());
             return allItems
-                .OrderBy(c => c.Id)
+                .OrderByDescending(c => c.Id)
                 .Skip(offset)
                 .Take(pageSize)
                 .ToList();

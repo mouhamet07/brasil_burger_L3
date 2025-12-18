@@ -46,5 +46,24 @@ namespace brasilBurger.Controllers
                 return RedirectToAction("Index", "Catalogue");
             return View("Paiement",paiementVM);
         }
+        [HttpGet]
+        public IActionResult Index(int page=1, String etat="all")
+        {
+            var commandes = _commandeServices.GetCommandesByClient(1,page,etat); // A gerer
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = (int)Math.Ceiling(
+                (double)_commandeServices.CountTotal(1,etat) / 4
+            );
+            ViewBag.SelectedEtat = etat;
+            return View(commandes);
+        }
+        [HttpGet]
+        public IActionResult Details(int id)
+        {
+            var commande = _commandeServices.GetCommandeById(id);
+            if(commande == null) 
+                commande = new Commande();
+            return View(commande);
+        }
     }
 }
