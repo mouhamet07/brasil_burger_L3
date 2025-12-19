@@ -3,7 +3,18 @@
     ViewData["Title"] = "Inscription";
 }
 @model RegisterVM
-
+@if (TempData["SuccessMessages"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessages"]
+    </div>
+}
+@if (TempData["ErrorMessages"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessages"]
+    </div>
+}
 <div class="container d-flex align-items-center justify-content-center" style="min-height: 100vh; max-height: 100vh;">
     <div class="row w-100 shadow-lg">
         <div class="col-lg-6 auth-left d-flex flex-column justify-content-center">
@@ -25,6 +36,7 @@
                 </div>
                 <div class="mb-3">
                     <input asp-for="Password" type="password" class="form-control" placeholder="Mot de passe">
+                    <p class="form-text text-muted">Entrez un mot de passe d'au moins 6 caractères</p>
                 </div>
                 <button type="submit" class="btn btn-orange w-100">S'inscrire</button>
             </form>

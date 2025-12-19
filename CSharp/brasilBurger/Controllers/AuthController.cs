@@ -35,29 +35,23 @@ namespace brasilBurger.Controllers
                     HttpContext.Session.SetInt32("UserId", user.Id);
                     HttpContext.Session.SetString("UserRole", user.Role.ToString());
                     HttpContext.Session.SetString("UserName", user.NomComplet);
+                    TempData["SuccessMessages"] = "Connexion effectué avec succès";
                     return RedirectToAction("Index", "Catalogue");
                 }
+                    TempData["ErrorMessages"] = "Login ou mot de passe invalide!";
                     return RedirectToAction("Login");
             }
             catch (Exception)
             {
-                _logger.LogError("Erreur lors de l'authentification");
-                throw;
+                TempData["ErrorMessages"] = "Erreur lors de la connexion, réessayer!";
+                return RedirectToAction("Login");
             }
         }
         [AuthRequired]
         public IActionResult Logout()
         {
-            try
-            {
-                HttpContext.Session.Clear();
-                return RedirectToAction("Login");
-            }
-            catch (Exception)
-            {
-                _logger.LogError("Erreur lors de la déconnexion");
-                throw;
-            }
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login");
         }
         [HttpGet]
         public IActionResult Register()
@@ -66,31 +60,40 @@ namespace brasilBurger.Controllers
                 return RedirectToAction("Index", "Catalogue");
             return View();
         }
-
         [HttpPost]
         public IActionResult Register(RegisterVM model)
         {
-            if (!ModelState.IsValid)
-                return View(model);
-            var emailExiste = _userServices.VerifyUniqueEmail(model);
-            if (emailExiste)
+            try
             {
-                _logger.LogError("Email déjà utilisé");
-                return View(model);
+                if (!ModelState.IsValid)
+                    return View(model);
+                var emailExiste = _userServices.VerifyUniqueEmail(model);
+                if (emailExiste)
+                {
+                    _logger.LogError("Email déjà utilisé");
+                    return View(model);
+                }
+                var user = new User
+                {
+                    NomComplet = model.NomComplet,
+                    Telephone = model.Telephone,
+                    Email = model.Email,
+                    Password = model.Password,
+                    Role = RoleUser.CLIENT,
+                    Etat = true
+                };
+                _userServices.CreateClient(user);
+                HttpContext.Session.SetInt32("UserId", user.Id);
+                HttpContext.Session.SetString("UserRole", user.Role.ToString());
+                HttpContext.Session.SetString("UserName", user.NomComplet);
+                TempData["SuccessMessages"] = "Inscription effectuée avec succès";
+                return RedirectToAction("Index", "Catalogue");
             }
-            var user = new User
+            catch (Exception)
             {
-                NomComplet = model.NomComplet,
-                Telephone = model.Telephone,
-                Email = model.Email,
-                Password = model.Password,
-                Role = RoleUser.CLIENT,
-                Etat = true
-            };
-            _userServices.CreateClient(user);
-            HttpContext.Session.SetInt32("UserId", user.Id);
-            HttpContext.Session.SetString("UserRole", user.Role.ToString());
-            return RedirectToAction("Index", "Catalogue");
+                TempData["ErrorMessages"] = "Erreur : Les informations sont invalides !";
+                return RedirectToAction("Register");
+            }
         }
     }
 }

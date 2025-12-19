@@ -54,7 +54,7 @@ namespace brasilBurger.Controllers
                 return View("Paiement",paiementVM);
             }catch (Exception)
             {
-                _logger.LogError("Erreur lors de la commande");
+                TempData["ErrorMessages"] = "Erreur lors de la commande";
                 return RedirectToAction("Index", "Catalogue");
             }
         }

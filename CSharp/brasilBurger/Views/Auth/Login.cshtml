@@ -3,6 +3,18 @@
     ViewData["Title"] = "Connexion";
 }
 @model LoginVM
+@if (TempData["SuccessMessages"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessages"]
+    </div>
+}
+@if (TempData["ErrorMessages"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessages"]
+    </div>
+}
 <div class="container d-flex align-items-center justify-content-center" style="min-height: 100vh;">
     <div class="row w-100 shadow-lg">
         <div class="col-lg-6 auth-left d-flex flex-column justify-content-center">
@@ -20,7 +32,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label" asp-for="Password">Mot de passe</label>
-                    <input type="password" asp-for="Password" class="form-control" placeholder="••••••••">
+                    <input type="password" asp-for="Password" class="form-control" placeholder="Entrez votre mot de passe">
                 </div>
                 <button type="submit" class="btn btn-orange w-100 mb-3">Se connecter</button>
                 <div class="text-center">

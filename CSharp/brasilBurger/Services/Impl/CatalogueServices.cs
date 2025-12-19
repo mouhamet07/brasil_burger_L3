@@ -161,5 +161,17 @@ namespace brasilBurger.Services.Impl
                 throw;
             }
         }
+        public Zone GetZoneById(int zoneId)
+        {
+            try
+            {
+                return _context.Zones.Where(z => z.Etat == true).FirstOrDefault(z => z.Id == zoneId);
+            }
+            catch (Exception)
+            {
+                _logger.LogError("Erreur lors de la recuperation de la zone");
+                throw;
+            }
+        }
     }
 }

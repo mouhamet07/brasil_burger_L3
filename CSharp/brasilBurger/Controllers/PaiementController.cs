@@ -32,13 +32,18 @@ namespace brasilBurger.Controllers
             try
             {
                 var typeEnum = TypeCmd=="SUR_PLACE" ? TypeCommande.SUR_PLACE : TypeCmd=="A_RECUPERER" ? TypeCommande.A_RECUPERER : TypeCommande.LIVRAISON;
+                var zoneId = TypeCmd=="LIVRAISON" ? ZoneId : null;
+                if (zoneId != null)
+                {
+                    paiementVM.Total += _catalogueServices.GetZoneById((int)zoneId).PrixLivraison;
+                }
                 var cmd = new Commande
                 {
                     DateCommande = DateTime.UtcNow,
                     Etat = TypeCmd=="LIVRAISON" ? EtatCommande.EN_ATTENTE : EtatCommande.EN_COURS,
                     Type = typeEnum,
                     ClientId = (int)HttpContext.Session.GetInt32("UserId"),
-                    ZoneId = TypeCmd=="LIVRAISON" ? ZoneId : null,
+                    ZoneId = zoneId,
                     MontantTotal = paiementVM.Total
                 };
                 _commandeServices.CreateCommande(cmd);
@@ -74,10 +79,11 @@ namespace brasilBurger.Controllers
                     Mode = ModePaie=="WAVE" ? ModePaiement.WAVE : ModePaiement.OM
                 };
                 _paiementServices.CreatePaiement(paiement);
+                TempData["SuccessMessages"] = "Commande effectuée avec succès";
                 return RedirectToAction("Index", "Commande");
             }catch (Exception)
             {
-                _logger.LogError("Erreur lors de la commande");
+                TempData["ErrorMessages"] = "Erreur lors de la commande";
                 return RedirectToAction("Index", "Catalogue");
             }
         }

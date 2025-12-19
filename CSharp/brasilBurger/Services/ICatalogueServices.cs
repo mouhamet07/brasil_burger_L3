@@ -11,5 +11,6 @@ namespace brasilBurger.Services
         List<Complement> GetComplementsByMenu(int id);
         List<Zone> GetZones();
         Complement GetComplementById(int id);
+        Zone GetZoneById(int zoneId);
     }
 }
