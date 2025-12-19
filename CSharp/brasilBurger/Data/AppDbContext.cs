@@ -1,10 +1,14 @@
 using brasilBurger.Models;
 using Microsoft.EntityFrameworkCore;
-
+using Npgsql;
 namespace brasilBurger.Data
 {
     public class AppDbContext : DbContext
     {
+        public AppDbContext(DbContextOptions<AppDbContext> options)
+            :base(options)
+        {
+        }
         public DbSet<User> Users { get; set; }
         public DbSet<Zone> Zones { get; set; }
         public DbSet<Livreur> Livreurs { get; set; }
@@ -18,6 +22,13 @@ namespace brasilBurger.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasPostgresEnum<EtatCommande>();
+            modelBuilder.HasPostgresEnum<TypeCommande>();
+            modelBuilder.HasPostgresEnum<RoleUser>();
+            modelBuilder.HasPostgresEnum<ModePaiement>();
+            modelBuilder.HasPostgresEnum<CategorieComplement>();
+            modelBuilder.HasPostgresEnum<TypeCommandeItem>();
+            
             //User
             modelBuilder.Entity<User>(entity =>
             {
@@ -28,7 +39,7 @@ namespace brasilBurger.Data
                 entity.Property(u => u.Telephone).HasColumnName("telephone");
                 entity.Property(u => u.Email).HasColumnName("email");
                 entity.Property(u => u.Password).HasColumnName("password");
-                entity.Property(u => u.Role).HasColumnName("role").HasConversion<string>();
+                entity.Property(u => u.Role).HasColumnName("role").HasColumnType("role_user");
                 entity.Property(u => u.Etat).HasColumnName("etat");
             });
             //Zone
@@ -85,7 +96,7 @@ namespace brasilBurger.Data
                 entity.Property(c => c.Prix).HasColumnName("prix");
                 entity.Property(c => c.Image).HasColumnName("image");
                 entity.Property(c => c.Etat).HasColumnName("etat");
-                entity.Property(c => c.Categorie).HasColumnName("categorie").HasConversion<string>();
+                entity.Property(c => c.Categorie).HasColumnName("categorie").HasColumnType("categorie_complement");
             });
             //MenuComplement
             modelBuilder.Entity<MenuComplement>(entity =>
@@ -102,11 +113,8 @@ namespace brasilBurger.Data
                 entity.HasKey(c => c.Id);
                 entity.Property(c => c.Id).HasColumnName("id");
                 entity.Property(c => c.DateCommande).HasColumnName("datecommande");
-                entity.Property(c => c.Etat).HasColumnName("etat").HasConversion(
-                    v => v.ToString(),
-                    v => (EtatCommande)Enum.Parse(typeof(EtatCommande), v
-                ));
-                entity.Property(c => c.Type).HasColumnName("type").HasConversion<string>();
+                entity.Property(c => c.Etat).HasColumnName("etat").HasColumnType("etat_commande");
+                entity.Property(c => c.Type).HasColumnName("type").HasColumnType("type_commande");
                 entity.Property(c => c.MontantTotal).HasColumnName("montant_total");
                 entity.Property(c => c.ClientId).HasColumnName("client_id");
                 entity.Property(c => c.ZoneId).HasColumnName("zone_id");
@@ -123,7 +131,7 @@ namespace brasilBurger.Data
                     .WithMany(c => c.CommandeItems)
                     .HasForeignKey(ci => ci.CommandeId)
                     .OnDelete(DeleteBehavior.Cascade);
-                entity.Property(ci => ci.Type).HasColumnName("type").HasConversion<string>();
+                entity.Property(ci => ci.Type).HasColumnName("type").HasColumnType("type_commande_item");
                 entity.Property(ci => ci.ProduitId).HasColumnName("produit_id");
                 entity.Property(ci => ci.Quantite).HasColumnName("quantite");
                 entity.Property(ci => ci.PrixUnitaire).HasColumnName("prix_unitaire");
@@ -136,7 +144,7 @@ namespace brasilBurger.Data
                 entity.Property(p => p.Id).HasColumnName("id");
                 entity.Property(p => p.DatePaiement).HasColumnName("date_paiement");
                 entity.Property(p => p.Montant).HasColumnName("montant");
-                entity.Property(p => p.Mode).HasColumnName("mode").HasConversion<string>();
+                entity.Property(p => p.Mode).HasColumnName("mode").HasColumnType("mode_paiement");
                 entity.Property(p => p.CommandeId).HasColumnName("commande_id");
             });
         }
