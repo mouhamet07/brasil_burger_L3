@@ -39,9 +39,10 @@
                     <input type="hidden" name="ProduitId" value="@Model.ProduitId" />
                     <input type="hidden" name="Type" value="@Model.Type" />
                     <input type="hidden" name="Quantite" value="@Model.Quantite" />
-                    @foreach(var cId in Model.ComplementIds)
+                    <input type="hidden" name="PrixProduit" value="@Model.PrixProduit" />
+                    @foreach(var id in Model.ComplementIds)
                     {
-                        <input type="hidden" name="SelectedComplements" value="@cId" />
+                        <input type="hidden" name="ComplementIds" value="@id" />
                     }
                     <div class="mb-3">
                         <label class="form-label">Téléphone</label>

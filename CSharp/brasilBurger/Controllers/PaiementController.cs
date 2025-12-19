@@ -14,11 +14,7 @@ namespace brasilBurger.Controllers
         private readonly ICatalogueServices _catalogueServices;
         private readonly IPaiementServices _paiementServices;
         private ILogger<AppDbContext> _logger;
-        public PaiementController(
-            AppDbContext context,ILogger<AppDbContext> logger,
-            ICommandeServices commandeServices, ICatalogueServices catalogueServices, 
-            IPaiementServices paiementServices, IUserServices userServices
-            )
+        public PaiementController(AppDbContext context,ILogger<AppDbContext> logger,ICommandeServices commandeServices,ICatalogueServices catalogueServices,IPaiementServices paiementServices,IUserServices userServices)
         {
             _context = context;
             _commandeServices = commandeServices;
@@ -27,16 +23,20 @@ namespace brasilBurger.Controllers
             _logger = logger;
         }
         [HttpPost]
-        public IActionResult Payer(PaiementVM paiementVM,string Telephone, string TypeCmd, int? ZoneId, string ModePaie)
+        public IActionResult Payer(PaiementVM paiementVM,string Telephone,string TypeCmd,int? ZoneId,string ModePaie)
         {
             try
             {
                 var typeEnum = TypeCmd=="SUR_PLACE" ? TypeCommande.SUR_PLACE : TypeCmd=="A_RECUPERER" ? TypeCommande.A_RECUPERER : TypeCommande.LIVRAISON;
                 var zoneId = TypeCmd=="LIVRAISON" ? ZoneId : null;
-                if (zoneId != null)
+                decimal total = paiementVM.PrixProduit * paiementVM.Quantite;
+                if(paiementVM.ComplementIds!=null)
                 {
-                    paiementVM.Total += _catalogueServices.GetZoneById((int)zoneId).PrixLivraison;
+                    foreach(var compId in paiementVM.ComplementIds)
+                        total+=_catalogueServices.GetComplementById(compId).Prix*paiementVM.Quantite;
                 }
+                if(zoneId!=null)
+                    total+=_catalogueServices.GetZoneById(zoneId.Value).PrixLivraison;
                 var cmd = new Commande
                 {
                     DateCommande = DateTime.UtcNow,
@@ -44,7 +44,7 @@ namespace brasilBurger.Controllers
                     Type = typeEnum,
                     ClientId = (int)HttpContext.Session.GetInt32("UserId"),
                     ZoneId = zoneId,
-                    MontantTotal = paiementVM.Total
+                    MontantTotal = total
                 };
                 _commandeServices.CreateCommande(cmd);
                 var item = new CommandeItem
@@ -56,35 +56,36 @@ namespace brasilBurger.Controllers
                     PrixUnitaire = paiementVM.PrixProduit
                 };
                 _commandeServices.CreateCommandeItem(item);
-                if (paiementVM.ComplementIds != null && paiementVM.ComplementIds.Count > 0)
+                if(paiementVM.ComplementIds!=null)
                 {
                     foreach(var compId in paiementVM.ComplementIds)
                     {
-                        var compItem = new CommandeItem
+                        var compItem=new CommandeItem
                         {
-                            CommandeId = cmd.Id,
-                            ProduitId = compId,
-                            Type = TypeCommandeItem.COMPLEMENT,
-                            Quantite = 1,
-                            PrixUnitaire = _catalogueServices.GetComplementById(compId).Prix
+                            CommandeId=cmd.Id,
+                            ProduitId=compId,
+                            Type=TypeCommandeItem.COMPLEMENT,
+                            Quantite=paiementVM.Quantite,
+                            PrixUnitaire=_catalogueServices.GetComplementById(compId).Prix
                         };
                         _commandeServices.CreateCommandeItem(compItem);
                     }
                 }
-                var paiement = new Paiement
+                var paiement=new Paiement
                 {
-                    CommandeId = cmd.Id,
-                    DatePaiement = DateTime.UtcNow,
-                    Montant = paiementVM.Total,
-                    Mode = ModePaie=="WAVE" ? ModePaiement.WAVE : ModePaiement.OM
+                    CommandeId=cmd.Id,
+                    DatePaiement=DateTime.UtcNow,
+                    Montant=total,
+                    Mode=ModePaie=="WAVE"?ModePaiement.WAVE:ModePaiement.OM
                 };
                 _paiementServices.CreatePaiement(paiement);
-                TempData["SuccessMessages"] = "Commande effectuée avec succès";
-                return RedirectToAction("Index", "Commande");
-            }catch (Exception)
+                TempData["SuccessMessages"]="Commande effectuée avec succès";
+                return RedirectToAction("Index","Commande");
+            }
+            catch(Exception)
             {
-                TempData["ErrorMessages"] = "Erreur lors de la commande";
-                return RedirectToAction("Index", "Catalogue");
+                TempData["ErrorMessages"]="Erreur lors de la commande";
+                return RedirectToAction("Index","Catalogue");
             }
         }
     }
