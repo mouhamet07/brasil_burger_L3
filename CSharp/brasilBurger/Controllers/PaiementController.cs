@@ -1,10 +1,12 @@
 using brasilBurger.Data;
+using brasilBurger.Filters;
 using brasilBurger.Models;
 using brasilBurger.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace brasilBurger.Controllers
 {
+    [AuthRequired]
     public class PaiementController : Controller
     {
         private readonly AppDbContext _context;
@@ -35,7 +37,7 @@ namespace brasilBurger.Controllers
                     DateCommande = DateTime.UtcNow,
                     Etat = TypeCmd=="LIVRAISON" ? EtatCommande.EN_ATTENTE : EtatCommande.EN_COURS,
                     Type = typeEnum,
-                    ClientId = 1, // A gerer,
+                    ClientId = (int)HttpContext.Session.GetInt32("UserId"),
                     ZoneId = TypeCmd=="LIVRAISON" ? ZoneId : null,
                     MontantTotal = paiementVM.Total
                 };

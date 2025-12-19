@@ -1,9 +1,11 @@
+using brasilBurger.Filters;
 using brasilBurger.Models;
 using brasilBurger.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace brasilBurger.Controllers
 {
+    [AuthRequired]
     public class CommandeController : Controller
     {
         private readonly ILogger<CommandeController> _logger;
@@ -61,7 +63,8 @@ namespace brasilBurger.Controllers
         {
             try
             {
-                var commandes = _commandeServices.GetCommandesByClient(1,page,etat); // A gerer
+                var id = (int)HttpContext.Session.GetInt32("UserId");
+                var commandes = _commandeServices.GetCommandesByClient(id,page,etat);
                 ViewBag.CurrentPage = page;
                 ViewBag.TotalPages = (int)Math.Ceiling(
                     (double)_commandeServices.CountTotal(1,etat) / 4

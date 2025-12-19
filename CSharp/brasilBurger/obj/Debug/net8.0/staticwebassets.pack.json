@@ -5,6 +5,10 @@
       "PackagePath": "staticwebassets\\brasilBurger.bundle.scp.css"
     },
     {
+      "Id": "C:\\Users\\mouha\\Desktop\\Brasil_Burger\\brasil_burger_L3\\CSharp\\brasilBurger\\wwwroot\\css\\auth.css",
+      "PackagePath": "staticwebassets\\css\\auth.css"
+    },
+    {
       "Id": "C:\\Users\\mouha\\Desktop\\Brasil_Burger\\brasil_burger_L3\\CSharp\\brasilBurger\\wwwroot\\css\\base.css",
       "PackagePath": "staticwebassets\\css\\base.css"
     },

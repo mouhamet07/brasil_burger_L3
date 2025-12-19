@@ -1,6 +1,7 @@
 using brasilBurger.Services;
 using Microsoft.AspNetCore.Mvc;
 using brasilBurger.Models;
+using brasilBurger.Filters;
 
 namespace brasilBurger.Controllers
 {
@@ -34,6 +35,7 @@ namespace brasilBurger.Controllers
                 return View(new List<CatalogueItemVM>());
             }
         }
+        [AuthRequired]
         [HttpGet]
         public IActionResult Details(int id, string type)
         {

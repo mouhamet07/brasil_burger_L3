@@ -1,0 +1,33 @@
+@{
+    Layout = "_AuthLayout";
+    ViewData["Title"] = "Inscription";
+}
+@model RegisterVM
+
+<div class="container d-flex align-items-center justify-content-center" style="min-height: 100vh; max-height: 100vh;">
+    <div class="row w-100 shadow-lg">
+        <div class="col-lg-6 auth-left d-flex flex-column justify-content-center">
+            <h2>
+                Bienvenue <br> chez Brasil Burger
+            </h2>
+        </div>
+        <div class="col-lg-6 auth-right">
+            <h2>Inscription</h2>
+            <form asp-action="Register" asp-controller="Auth" method="post">
+                <div class="mb-3">
+                    <input asp-for="NomComplet" class="form-control" placeholder="Nom complet">
+                </div>
+                <div class="mb-3">
+                    <input asp-for="Email" class="form-control" placeholder="Email">
+                </div>
+                <div class="mb-3">
+                    <input asp-for="Telephone" class="form-control" placeholder="Téléphone">
+                </div>
+                <div class="mb-3">
+                    <input asp-for="Password" type="password" class="form-control" placeholder="Mot de passe">
+                </div>
+                <button type="submit" class="btn btn-orange w-100">S'inscrire</button>
+            </form>
+        </div>
+    </div>
+</div>

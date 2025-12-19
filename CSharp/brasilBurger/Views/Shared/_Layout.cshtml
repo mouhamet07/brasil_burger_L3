@@ -22,15 +22,26 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link " asp-controller="Catalogue" asp-action="Index">Catalogue</a>
+                            <a class="nav-link" asp-controller="Catalogue" asp-action="Index">Catalogue</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link " asp-controller="Commande" asp-action="Index" asp-route-id="1" >Commandes</a>
+                            <a class="nav-link " asp-controller="Commande" asp-action="Index" asp-route-id="Context.Session.GetInt32("UserId")" >Commandes</a>
                         </li>
                     </ul>
-                    <div class="d-flex align-items-center text-white">
-                        <i class="fas fa-people me-2"></i>
-                        <a href="../login.html" class="text-white text-decoration-none nav-link">Déconnexion</a>
+                    <div class="d-flex align-items-center">
+                        @if(Context.Session.GetInt32("UserId") != null){
+                            <i class="fa-solid fa-circle-user me-2" style="font-size:1.2rem;color:#FFF8EC;"></i>
+                            <span class="text-white me-3">@Context.Session.GetString("UserName")</span>
+                            <a asp-action="Logout" asp-controller="Auth" class="text-white text-decoration-none nav-link">Déconnexion</a>
+                        }
+                        else{
+                            <a class="nav-link " asp-controller="Auth" asp-action="Login" >
+                                <button style="width:100%" class="btn btn-orange m-3">Se connecter</button>
+                            </a>
+                            <a class="nav-link" asp-controller="Auth" asp-action="Register" >
+                                <button style="width:100%" class="btn btn-outline-orange m-3">S'inscrire</button>
+                            </a>
+                        }
                     </div>
                 </div>
             </div>

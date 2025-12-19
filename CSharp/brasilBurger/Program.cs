@@ -4,6 +4,7 @@ using brasilBurger.Models;
 using brasilBurger.Services.Impl;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
+using Microsoft.AspNetCore.Identity;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +21,15 @@ dataSourceBuilder.MapEnum<TypeCommandeItem>("type_commande_item");
 dataSourceBuilder.MapEnum<ModePaiement>("mode_paiement");
 dataSourceBuilder.MapEnum<RoleUser>("role_user");
 dataSourceBuilder.MapEnum<CategorieComplement>("categorie_complement");
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromHours(2);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+
 var dataSource = dataSourceBuilder.Build();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(dataSource)
@@ -30,6 +40,7 @@ builder.Services.AddScoped<ICatalogueServices, CatalogueServices>();
 builder.Services.AddScoped<ICommandeServices, CommandeServices>();
 builder.Services.AddScoped<IPaiementServices, PaiementServices>();
 builder.Services.AddScoped<IUserServices, UserServices>();
+
 
 
 // Add services to the container.
@@ -48,9 +59,13 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseSession();
+
 app.UseRouting();
 
 app.UseAuthorization();
+
+
 
 app.MapControllerRoute(
     name: "default",

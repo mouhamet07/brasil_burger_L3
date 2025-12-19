@@ -153,6 +153,7 @@ body {
     color: var(--blue);
     background-color: transparent;
     transition: background-color 0.2s ease, color 0.2s ease;
+    border-radius: 10px; 
 }
 .btn-outline:hover {
     background-color: var(--blue);

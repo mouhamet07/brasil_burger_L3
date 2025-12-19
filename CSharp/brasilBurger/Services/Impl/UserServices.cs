@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+using System.Text;
 using brasilBurger.Controllers;
 using brasilBurger.Data;
 using brasilBurger.Models;
@@ -26,6 +28,29 @@ namespace brasilBurger.Services.Impl
                 _logger.LogError("Erreur lors de la recuperation du client");
                 throw;
             }
+        }
+        public User Authenticate(LoginVM model)
+        {
+            var user = _context.Users
+                .Where(u => u.Role == RoleUser.CLIENT)
+                .Where(u => u.Etat == true)
+                .FirstOrDefault(u => 
+                    u.Email == model.Login || u.Telephone == model.Login
+                );
+            if (user == null || model.Password != user.Password)
+            {
+                return null;
+            }
+            return user;
+        }
+        public void CreateClient(User user)
+        {
+            _context.Users.Add(user);
+            _context.SaveChanges();
+        }
+        public bool VerifyUniqueEmail(RegisterVM user)
+        {
+            return _context.Users.Any(u => u.Email == user.Email);
         }
     }
 }
