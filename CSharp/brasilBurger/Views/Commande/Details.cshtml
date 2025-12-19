@@ -11,15 +11,23 @@
             @foreach(var item in Model.CommandeItems)
             {
                 <li class="list-group-item d-flex justify-content-between">
-                    @item.Type x @item.Quantite
-                    <span>@(item.PrixUnitaire * item.Quantite) FCFA</span>
+                    @if(item.Type != TypeCommandeItem.COMPLEMENT)
+                    {
+                        <span>@item.Type x @item.Quantite</span>
+                        <span>@(item.PrixUnitaire * item.Quantite) FCFA</span>
+                    }
+                    else
+                    {
+                        <span>@item.Type</span>
+                        <span>@item.PrixUnitaire FCFA</span>
+                    }
                 </li>
             }
             @if(Model.Zone != null)
             {
                 <li class="list-group-item d-flex justify-content-between">
                     Livraison zone @(Model.Zone.Nom)
-                    <span>@Model.Zone.PrixLivraison ?? 0 FCFA</span>
+                    <span>@Model.Zone.PrixLivraison FCFA</span>
                 </li>
             }
         </ul>

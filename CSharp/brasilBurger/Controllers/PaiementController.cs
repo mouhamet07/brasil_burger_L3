@@ -33,7 +33,7 @@ namespace brasilBurger.Controllers
                 if(paiementVM.ComplementIds!=null)
                 {
                     foreach(var compId in paiementVM.ComplementIds)
-                        total+=_catalogueServices.GetComplementById(compId).Prix*paiementVM.Quantite;
+                        total+=_catalogueServices.GetComplementById(compId).Prix;
                 }
                 if(zoneId!=null)
                     total+=_catalogueServices.GetZoneById(zoneId.Value).PrixLivraison;
