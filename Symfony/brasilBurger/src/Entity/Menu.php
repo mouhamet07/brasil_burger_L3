@@ -21,7 +21,7 @@ class Menu
     private ?string $image = null;
 
     #[ORM\Column]
-    private ?string $etat = null;
+    private ?bool $etat = null;
 
     #[ORM\Column]
     private ?float $montant = null;
@@ -55,12 +55,12 @@ class Menu
         return $this;
     }
 
-    public function getEtat(): ?string
+    public function isEtat(): ?bool
     {
         return $this->etat;
     }
 
-    public function setEtat(string $etat): static
+    public function setEtat(bool $etat): static
     {
         $this->etat = $etat;
 

@@ -10,15 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: CommandeRepository::class)]
 class Commande
 {
-    public const TYPE_SUR_PLACE = 'sur_place';
-    public const TYPE_A_RECUPERER = 'a_recuperer';
-    public const TYPE_LIVRAISON = 'livraison';
-
-    public const ETAT_EN_ATTENTE = 'en_attente';
-    public const ETAT_EN_COURS = 'en_cours';
-    public const ETAT_TERMINEE = 'terminee';
-    public const ETAT_ANNULEE = 'annulee';
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -27,11 +18,14 @@ class Commande
     #[ORM\Column]
     private ?\DateTimeImmutable $dateCommande = null;
 
-    #[ORM\Column]
-    private ?bool $etat = null;
+    #[ORM\Column(enumType: EtatCommande::class)]
+    private ?EtatCommande $etat = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $type = null;
+    #[ORM\Column(enumType: TypeCommande::class)]
+    private ?TypeCommande $type = null;
+
+    #[ORM\Column(options: ['default' => false])]
+    private bool $isArchived = false;
 
     #[ORM\Column]
     private ?float $montantTotal = null;
@@ -39,16 +33,16 @@ class Commande
     /**
      * @var Collection<int, CommandeItem>
      */
-    #[ORM\OneToMany(targetEntity: CommandeItem::class, mappedBy: 'commande')]
+    #[ORM\OneToMany(targetEntity: CommandeItem::class, mappedBy: 'commande', orphanRemoval: true)]
     private Collection $commandeItems;
 
     #[ORM\OneToOne(mappedBy: 'commande', targetEntity: Paiement::class)]
     private ?Paiement $paiement = null;
 
-
     public function __construct()
     {
         $this->commandeItems = new ArrayCollection();
+        $this->dateCommande = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -56,39 +50,47 @@ class Commande
         return $this->id;
     }
 
-    public function getDateCommande(): ?\DateTimeImmutable
+    public function getDateCommande(): \DateTimeImmutable
     {
         return $this->dateCommande;
     }
 
-    public function setDateCommande(\DateTimeImmutable $dateCommande): static
+    public function setDateCommande(\DateTimeImmutable $dateCommande): self
     {
         $this->dateCommande = $dateCommande;
-
         return $this;
     }
 
-    public function isEtat(): ?bool
+    public function getEtat(): ?EtatCommande
     {
         return $this->etat;
     }
 
-    public function setEtat(bool $etat): static
+    public function setEtat(EtatCommande $etat): self
     {
         $this->etat = $etat;
-
         return $this;
     }
 
-    public function getType(): ?string
+    public function getType(): ?TypeCommande
     {
         return $this->type;
     }
 
-    public function setType(string $type): static
+    public function setType(TypeCommande $type): self
     {
         $this->type = $type;
+        return $this;
+    }
 
+    public function isArchived(): bool
+    {
+        return $this->isArchived;
+    }
+
+    public function setArchived(bool $archived): self
+    {
+        $this->isArchived = $archived;
         return $this;
     }
 
@@ -97,10 +99,9 @@ class Commande
         return $this->montantTotal;
     }
 
-    public function setMontantTotal(float $montantTotal): static
+    public function setMontantTotal(float $montantTotal): self
     {
         $this->montantTotal = $montantTotal;
-
         return $this;
     }
 
@@ -112,25 +113,22 @@ class Commande
         return $this->commandeItems;
     }
 
-    public function addCommandeItem(CommandeItem $commandeItem): static
+    public function addCommandeItem(CommandeItem $commandeItem): self
     {
         if (!$this->commandeItems->contains($commandeItem)) {
             $this->commandeItems->add($commandeItem);
             $commandeItem->setCommande($this);
         }
-
         return $this;
     }
 
-    public function removeCommandeItem(CommandeItem $commandeItem): static
+    public function removeCommandeItem(CommandeItem $commandeItem): self
     {
         if ($this->commandeItems->removeElement($commandeItem)) {
-            // set the owning side to null (unless already changed)
             if ($commandeItem->getCommande() === $this) {
                 $commandeItem->setCommande(null);
             }
         }
-
         return $this;
     }
 
@@ -139,11 +137,9 @@ class Commande
         return $this->paiement;
     }
 
-
     public function setPaiement(Paiement $paiement): self
     {
         $this->paiement = $paiement;
         return $this;
     }
-
 }
