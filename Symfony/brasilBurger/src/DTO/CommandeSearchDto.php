@@ -4,8 +4,8 @@ namespace App\DTO;
 use DateTime;
 
 class CommandeSearchDto {
-    public ?string $client = null;
-    public ?\DateTimeImmutable $date = null;
-    public ?string $etat = null;
-    public ?string $type = null;
+    public ?string $nomClient = null;
+    public ?string $dateCmd = null;
+    public ?string $etatCmd = null;
+    public ?string $typeCmd = null;
 }

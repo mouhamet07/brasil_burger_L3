@@ -29,15 +29,22 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link " href="dash.html">Dashboard</a>
+                            <a class="nav-link " href="{{ path("app_dashboard") }}">Dashboard</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link " href="liste.cmd.html">Commandes</a>
+                            <a class="nav-link " href="{{ path("app_commande_list") }}">Commandes</a>
                         </li>
                     </ul>
                     <div class="d-flex align-items-center text-white">
-                        <i class="fas fa-people me-2"></i>
-                        <a href="#" class="text-white text-decoration-none nav-link">Déconnexion</a>
+
+                            <i class="fa-solid fa-circle-user me-2" style="font-size:1.2rem;color:#FFF8EC;"></i>
+                            <span class="text-white me-3">username</span>
+                            <a href="" class="text-white text-decoration-none nav-link">Déconnexion</a>
+
+                            <a class="nav-link" href="" >
+                                <button style="width:100%" class="btn btn-orange m-3">Se connecter</button>
+                            </a>
+
                     </div>
                 </div>
             </div>
