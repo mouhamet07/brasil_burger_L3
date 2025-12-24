@@ -15,23 +15,16 @@
         <ul class="list-group list-group-flush">
             {% for item in commande.commandeItems %}
                 <li class="list-group-item d-flex justify-content-between">
-                    {{ item.produit.nom }}
+                    ID Produit: {{ item.produitId }} 
                     <span>{{ (item.prixUnitaire * item.quantite)|number_format(0, ' ', ' ') }} FCFA</span>
                 </li>
             {% endfor %}
-            {% if commande.zone is not null %}
-                <li class="list-group-item d-flex justify-content-between">
-                    Livraison {{ commande.zone.nom }}
-                    <span>{{ commande.zone.prixLivraison|number_format(0, ' ', ' ') }} FCFA</span>
-                </li>
-            {% endif %}
         </ul>
     </div>
     <div class="card mb-3 shadow-sm p-3">
         <p><strong>Client :</strong> {{ commande.client.nomComplet }}</p>
         <p><strong>Téléphone :</strong> {{ commande.client.telephone }}</p>
         <p><strong>Type :</strong> {{ commande.type.value|capitalize }}</p>
-        <p><strong>Zone :</strong> {{ commande.zone.nom ?? '—' }}</p>
         <p><strong>Statut :</strong>
             {% if commande.etat.value == 'EN_COURS' %}
                 <span class="badge status-pending">En cours</span>

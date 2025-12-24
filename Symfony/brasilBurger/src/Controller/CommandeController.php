@@ -56,7 +56,7 @@ final class CommandeController extends AbstractController
         if (!$commande) {
             throw $this->createNotFoundException("Commande #$id introuvable.");
         }
-        return $this->render('commande/show.html.twig', [
+        return $this->render('commande/details.html.twig', [
             'commande' => $commande,
         ]);
     }
