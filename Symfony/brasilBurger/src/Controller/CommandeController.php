@@ -60,7 +60,7 @@ final class CommandeController extends AbstractController
             'commande' => $commande,
         ]);
     }
-    #[Route('/{id}/annuler', name: 'app_commande_annuler', requirements: ['id' => '\d+'], methods:['POST'])]
+    #[Route('/{id}/annuler', name: 'app_commande_annuler', requirements: ['id' => '\d+'], methods:['GET'])]
     public function annuler(int $id): Response
     {
         $result = $this->commandeService->annulerCommande($id);
@@ -73,7 +73,7 @@ final class CommandeController extends AbstractController
         }
         return $this->redirectToRoute('app_commande_list');
     }
-    #[Route('/{id}/terminer', name: 'app_commande_terminer', requirements: ['id' => '\d+'], methods:['POST'])]
+    #[Route('/{id}/terminer', name: 'app_commande_terminer', requirements: ['id' => '\d+'], methods:['GET'])]
     public function terminer(int $id): Response
     {
         $result = $this->commandeService->terminerCommande($id);

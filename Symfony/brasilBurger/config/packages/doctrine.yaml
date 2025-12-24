@@ -46,3 +46,9 @@ when@prod:
                     adapter: cache.app
                 doctrine.system_cache_pool:
                     adapter: cache.system
+    
+    doctrine:
+    dbal:
+        url: '%env(resolve:DATABASE_URL)%'
+        # Spécifie explicitement PostgreSQL 15 (ou ta version exacte)
+        server_version: '15'
