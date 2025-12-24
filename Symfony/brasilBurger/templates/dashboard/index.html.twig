@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashbaord - Brasil Burger{% endblock %}
+
+{% block body %}
+    <div class="container py-5">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold">Tableau de Bord</h2>
+        </div>
+        <div class="row g-4 mb-5">
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card text-center">
+                    <div class="stat-icon icon-orange"><i class="fas fa-clock"></i></div>
+                    <div class="stat-label">En cours</div>
+                    <div class="stat-value">{{ enCours }}</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card text-center">
+                    <div class="stat-icon icon-green"><i class="fas fa-check-circle"></i></div>
+                    <div class="stat-label">Validées</div>
+                    <div class="stat-value">{{ validees }}</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card text-center">
+                    <div class="stat-icon icon-blue"><i class="fas fa-coins"></i></div>
+                    <div class="stat-label">Recettes</div>
+                    <div class="stat-value">{{ recettes|number_format(0, ' ', ' ') }} FCFA</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card text-center">
+                    <div class="stat-icon icon-red"><i class="fas fa-times-circle"></i></div>
+                    <div class="stat-label">Annulées</div>
+                    <div class="stat-value">{{ annulees }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="recent-orders p-4 bg-white rounded-4 shadow-sm">
+            <h3 class="section-title"><i class="fas fa-receipt me-2"></i>Commandes récentes</h3>
+            {% for commande in commandes %}
+                <div class="order-item">
+                    <div>
+                        <div class="order-id">#CMD-{{ commande.id }}</div>
+                        <div class="text-muted">
+                            {{ commande.dateCommande|date('d/m/Y H:i') }}
+                        </div>
+                    </div>
+                    <div class="text-end">
+                        <strong>
+                            {{ commande.montantTotal|number_format(0, ' ', ' ') }} FCFA
+                        </strong>
+                        {% if commande.etat.value == 'en_cours' %}
+                            <span class="order-status status-pending">En cours</span>
+                        {% elseif commande.etat.value == 'annulee' %}
+                            <span class="order-status status-completed" style="width:100px;">Validée</span>
+                        {% elseif commande.etat.value == 'en_attente' %}
+                            <span class="order-status status-waiting ">En Attente</span>
+                        {% else %}
+                            <span class="order-status status-cancelled">Annulée</span>
+                        {% endif %}
+                    </div>
+                </div>
+            {% else %}
+                <p class="text-center text-muted">Aucune commande récente</p>
+            {% endfor %}
+            <div class="text-center mt-3">
+                <button class="btn btn-outline rounded-pill px-4">
+                    <i class="fas fa-list me-2"></i>Voir toutes les commandes
+                </button>
+            </div>
+        </div>
+    </div>
+{% endblock %}

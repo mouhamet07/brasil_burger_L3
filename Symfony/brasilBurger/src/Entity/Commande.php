@@ -15,7 +15,7 @@ class Commande
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
+    #[ORM\Column(name: "datecommande", type: "datetime_immutable")]
     private ?\DateTimeImmutable $dateCommande = null;
 
     #[ORM\Column(enumType: EtatCommande::class)]
@@ -23,9 +23,6 @@ class Commande
 
     #[ORM\Column(enumType: TypeCommande::class)]
     private ?TypeCommande $type = null;
-
-    #[ORM\Column(options: ['default' => false])]
-    private bool $isArchived = false;
 
     #[ORM\Column]
     private ?float $montantTotal = null;
@@ -80,17 +77,6 @@ class Commande
     public function setType(TypeCommande $type): static
     {
         $this->type = $type;
-        return $this;
-    }
-
-    public function isArchived(): ?bool
-    {
-        return $this->isArchived;
-    }
-
-    public function setArchived(bool $archived): static
-    {
-        $this->isArchived = $archived;
         return $this;
     }
 

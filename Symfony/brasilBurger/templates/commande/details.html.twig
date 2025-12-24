@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Details Commande - Brasil Burger{% endblock %}
+
+{% block body %}
+    <div class="container py-5">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="fw-bold">Commande #001</h3>
+            <div class="action-icons">
+                <button class="btn btn-vert btn-sm"><i class="fas fa-check"></i> Terminer</button>
+                <button class="btn btn-red btn-sm"><i class="fas fa-times"></i> Annuler</button>
+            </div>
+        </div>
+        <div class="card mb-3 shadow-sm p-3">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between">
+                    Cheese Burger
+                    <span>3 000 FCFA</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                    Compléments (Frites)
+                    <span>1 000 FCFA</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                    Livraison zone 1 (Dakar Plateau)
+                    <span>2 000 FCFA</span>
+                </li>
+            </ul>
+        </div>
+        <div class="card mb-3 shadow-sm p-3">
+            <p><strong>Client :</strong> Jean Dupont</p>
+            <p><strong>Téléphone :</strong> 77 123 45 67</p>
+            <p><strong>Type :</strong> Livraison</p>
+            <p><strong>Zone :</strong> Dakar Plateau</p>
+            <p><strong>Statut :</strong> <span class="badge status-pending badge-status">En cours</span></p>
+            <p><strong>Date :</strong> 12/12/2025</p>
+        </div>
+        <div class="card p-3 shadow-sm">
+            <h5 class="fw-bold mb-0">Total : 6 000 FCFA</h5>
+        </div>
+    </div>
+{% endblock %}
