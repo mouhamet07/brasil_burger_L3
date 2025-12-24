@@ -24,13 +24,6 @@ class CommandeSearchType extends AbstractType
                     'class' => 'form-control'
                 ]
             ])
-            ->add('dateCmd', TextType::class, [
-                'required' => false,
-                'attr' => [
-                    'placeholder' => 'Date (YYYY-MM-DD)',
-                    'class' => 'form-control'
-                ]
-            ])
             ->add('etatCmd', EnumType::class, [
                 'class' => EtatCommande::class,
                 'required' => false,

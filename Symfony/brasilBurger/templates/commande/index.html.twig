@@ -11,7 +11,7 @@
         <div class="card-body">
             {{ form_start(formSearch) }}
             <div class="row mb-3">
-                <div class="col-md-3">
+                <div class="col-md-6">
                     {{ form_widget(formSearch.nomClient, {'attr': {'class': 'form-control', 'placeholder': 'Rechercher un client'}}) }}
                 </div>
                 <div class="col-md-3">
@@ -19,9 +19,6 @@
                 </div>
                 <div class="col-md-3">
                     {{ form_widget(formSearch.typeCmd, {'attr': {'class': 'form-select'}}) }}
-                </div>
-                <div class="col-md-3">
-                    {{ form_widget(formSearch.dateCmd, {'attr': {'class': 'form-select'}}) }}
                 </div>
             </div>
             <button type="submit" class="btn btn-orange">Filtrer</button>

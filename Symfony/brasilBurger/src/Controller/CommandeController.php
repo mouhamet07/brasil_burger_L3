@@ -32,9 +32,6 @@ final class CommandeController extends AbstractController
             if ($searchDto->typeCmd !== null) {
                 $filtre['type'] = $searchDto->typeCmd;
             }
-            if ($searchDto->dateCmd !== null) {
-                $filtre['date'] = $searchDto->dateCmd;
-            }
         }
         $page = max(1, (int)$request->query->get('page', 1));
         $offset = ($page - 1) * self::LIMIT;
