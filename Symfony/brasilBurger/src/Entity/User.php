@@ -33,6 +33,9 @@ class User
     #[ORM\Column(length: 255)]
     private ?RoleUser $role = null;
 
+    #[ORM\Column]
+    private ?bool $etat = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -94,6 +97,18 @@ class User
     public function setRole(RoleUser $role): static
     {
         $this->role = $role;
+
+        return $this;
+    }
+
+    public function isEtat(): ?bool
+    {
+        return $this->etat;
+    }
+
+    public function setEtat(bool $etat): static
+    {
+        $this->etat = $etat;
 
         return $this;
     }

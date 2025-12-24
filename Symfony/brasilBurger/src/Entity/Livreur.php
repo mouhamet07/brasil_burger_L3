@@ -19,6 +19,9 @@ class Livreur
     #[ORM\Column(length: 255)]
     private ?string $telephone = null;
 
+    #[ORM\Column(options: ['default' => false])]
+    private ?bool $etat = false;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +47,18 @@ class Livreur
     public function setTelephone(string $telephone): static
     {
         $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    public function isEtat(): ?bool
+    {
+        return $this->etat;
+    }
+
+    public function setEtat(bool $etat): static
+    {
+        $this->etat = $etat;
 
         return $this;
     }

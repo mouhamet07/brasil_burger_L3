@@ -9,9 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ComplementRepository::class)]
 class Complement
 {
-    public const CATEGORIE_FRITES = 'frites';
-    public const CATEGORIE_BOISSON = 'boisson';
-    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -30,7 +27,7 @@ class Complement
     private ?bool $etat = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $categorie = null;
+    private ?CategorieComplement $categorie = null;
 
     public function getId(): ?int
     {
@@ -85,12 +82,12 @@ class Complement
         return $this;
     }
 
-    public function getCategorie(): ?string
+    public function getCategorie(): ?CategorieComplement
     {
         return $this->categorie;
     }
 
-    public function setCategorie(string $categorie): static
+    public function setCategorie(CategorieComplement $categorie): static
     {
         $this->categorie = $categorie;
 

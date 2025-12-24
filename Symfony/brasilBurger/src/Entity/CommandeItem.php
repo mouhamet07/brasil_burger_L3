@@ -7,18 +7,14 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CommandeItemRepository::class)]
 class CommandeItem
-{
-    public const TYPE_BURGER = 'burger';
-    public const TYPE_MENU = 'menu';
-    public const TYPE_COMPLEMENT = 'complement';
-    
+{    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $type = null;
+    private ?TypeCommandeItem $type = null;
 
     #[ORM\Column]
     private ?int $produitId = null;
@@ -37,12 +33,12 @@ class CommandeItem
         return $this->id;
     }
 
-    public function getType(): ?string
+    public function getType(): ?TypeCommandeItem
     {
         return $this->type;
     }
 
-    public function setType(string $type): static
+    public function setType(TypeCommandeItem $type): static
     {
         $this->type = $type;
 

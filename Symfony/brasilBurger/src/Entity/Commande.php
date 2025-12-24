@@ -50,12 +50,12 @@ class Commande
         return $this->id;
     }
 
-    public function getDateCommande(): \DateTimeImmutable
+    public function getDateCommande(): ?\DateTimeImmutable
     {
         return $this->dateCommande;
     }
 
-    public function setDateCommande(\DateTimeImmutable $dateCommande): self
+    public function setDateCommande(\DateTimeImmutable $dateCommande): static
     {
         $this->dateCommande = $dateCommande;
         return $this;
@@ -66,7 +66,7 @@ class Commande
         return $this->etat;
     }
 
-    public function setEtat(EtatCommande $etat): self
+    public function setEtat(EtatCommande $etat): static
     {
         $this->etat = $etat;
         return $this;
@@ -77,18 +77,18 @@ class Commande
         return $this->type;
     }
 
-    public function setType(TypeCommande $type): self
+    public function setType(TypeCommande $type): static
     {
         $this->type = $type;
         return $this;
     }
 
-    public function isArchived(): bool
+    public function isArchived(): ?bool
     {
         return $this->isArchived;
     }
 
-    public function setArchived(bool $archived): self
+    public function setArchived(bool $archived): static
     {
         $this->isArchived = $archived;
         return $this;
@@ -99,7 +99,7 @@ class Commande
         return $this->montantTotal;
     }
 
-    public function setMontantTotal(float $montantTotal): self
+    public function setMontantTotal(float $montantTotal): static
     {
         $this->montantTotal = $montantTotal;
         return $this;
@@ -113,7 +113,7 @@ class Commande
         return $this->commandeItems;
     }
 
-    public function addCommandeItem(CommandeItem $commandeItem): self
+    public function addCommandeItem(CommandeItem $commandeItem): static
     {
         if (!$this->commandeItems->contains($commandeItem)) {
             $this->commandeItems->add($commandeItem);
@@ -122,7 +122,7 @@ class Commande
         return $this;
     }
 
-    public function removeCommandeItem(CommandeItem $commandeItem): self
+    public function removeCommandeItem(CommandeItem $commandeItem): static
     {
         if ($this->commandeItems->removeElement($commandeItem)) {
             if ($commandeItem->getCommande() === $this) {
@@ -137,7 +137,7 @@ class Commande
         return $this->paiement;
     }
 
-    public function setPaiement(Paiement $paiement): self
+    public function setPaiement(Paiement $paiement): static
     {
         $this->paiement = $paiement;
         return $this;

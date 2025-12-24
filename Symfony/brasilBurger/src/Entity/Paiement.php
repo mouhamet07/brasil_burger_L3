@@ -7,10 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PaiementRepository::class)]
 class Paiement
-{
-    public const MODE_OM = 'om';
-    public const MODE_WAVE = 'wave';
-    
+{    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -23,7 +20,7 @@ class Paiement
     private ?float $montant = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $mode = null;
+    private ?ModePaiement $mode = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Commande $commande = null;
@@ -57,12 +54,12 @@ class Paiement
         return $this;
     }
 
-    public function getMode(): ?string
+    public function getMode(): ?ModePaiement
     {
         return $this->mode;
     }
 
-    public function setMode(string $mode): static
+    public function setMode(ModePaiement $mode): static
     {
         $this->mode = $mode;
 

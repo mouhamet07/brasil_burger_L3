@@ -16,8 +16,12 @@ class Zone
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
-    #[ORM\Column]
-    private ?float $prix_livraison = null;
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
+
+    private ?float $prixLivraison = null;
+
+    #[ORM\Column(options: ['default' => false])]
+    private ?bool $etat;
 
     public function getId(): ?int
     {
@@ -38,13 +42,25 @@ class Zone
 
     public function getPrixLivraison(): ?float
     {
-        return $this->prix_livraison;
+        return $this->prixLivraison;
     }
 
-    public function setPrixLivraison(float $prix_livraison): static
+    public function setPrixLivraison(float $prixLivraison): static
     {
-        $this->prix_livraison = $prix_livraison;
+        $this->prixLivraison = $prixLivraison;
 
+        return $this;
+    }
+
+    public function isEtat(): ?bool
+    {
+        return $this->etat;
+    }
+
+    public function setEtat(bool $etat): static
+    {
+        $this->etat = $etat;
+        
         return $this;
     }
 }
