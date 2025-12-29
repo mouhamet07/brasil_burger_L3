@@ -204,7 +204,7 @@ public class Main {
                     newUser.setTelephone(GesViews.saisirTelephone("Telephone: "));
                     newUser.setEmail(GesViews.saisirString("Email: "));
                     newUser.setPassword(GesViews.saisirString("Mot de passe: "));
-                    newUser.setRole(RoleUser.GESTIONNAIRE);
+                    newUser.setRole(RoleUser.gestionnaire);
                     success = logs.signup(newUser);
                     if (success) {
                         GesViews.afficherSuccess("Gestionnaire ajouté avec succès !");
@@ -673,7 +673,7 @@ public class Main {
         String email = GesViews.saisirString("Email: ");
         String password = GesViews.saisirString("Mot de passe: ");
         Optional<User> user = logs.login(email, password);
-        if (user.isPresent() && user.get().getRole() == RoleUser.GESTIONNAIRE) {
+        if (user.isPresent() && user.get().getRole() == RoleUser.gestionnaire) {
             var s = "Authentification réussie. Bienvenue " + user.get().getNomComplet();
             GesViews.afficherSuccess(s);
             return user.get();
