@@ -10,7 +10,7 @@ namespace brasilBurger.Services.Impl
     {
         private readonly AppDbContext _context;
         private readonly ILogger<CatalogueController> _logger;
-        public UserServices(AppDbContext context,ILogger<CatalogueController> logger)
+        public UserServices(AppDbContext context, ILogger<CatalogueController> logger)
         {
             _context = context;
             _logger = logger;
@@ -20,8 +20,8 @@ namespace brasilBurger.Services.Impl
             try
             {
                 return _context.Users
-                        .Where(u => u.Etat==true)
-                        .FirstOrDefault(u => u.Id == id);
+                    .Where(u => u.Etat == true)
+                    .FirstOrDefault(u => u.Id == id);
             }
             catch (Exception)
             {
@@ -34,10 +34,8 @@ namespace brasilBurger.Services.Impl
             var user = _context.Users
                 .Where(u => u.Role == RoleUser.CLIENT)
                 .Where(u => u.Etat == true)
-                .FirstOrDefault(u => 
-                    u.Email == model.Login || u.Telephone == model.Login
-                );
-            if (user == null || model.Password != user.Password)
+                .FirstOrDefault(u => u.Email == model.Login || u.Telephone == model.Login);
+            if (user == null || HashPassword(model.Password) != user.Password)
             {
                 return null;
             }
@@ -45,12 +43,26 @@ namespace brasilBurger.Services.Impl
         }
         public void CreateClient(User user)
         {
+            user.Password = HashPassword(user.Password);
             _context.Users.Add(user);
             _context.SaveChanges();
         }
         public bool VerifyUniqueEmail(RegisterVM user)
         {
             return _context.Users.Any(u => u.Email == user.Email);
+        }
+        private string HashPassword(string password)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                StringBuilder builder = new StringBuilder();
+                foreach (var b in bytes)
+                {
+                    builder.Append(b.ToString("x2"));
+                }
+                return builder.ToString();
+            }
         }
     }
 }
