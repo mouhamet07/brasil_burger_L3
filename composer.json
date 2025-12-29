@@ -1,7 +1,5 @@
 {
     "require": {
-        "symfony/orm-pack": "^2.6",
-        "symfony/webapp-pack": "^1.4",
-        "symfony/security-bundle": "^8.0"
+        "twig/extra-bundle": "^3.22"
     }
 }

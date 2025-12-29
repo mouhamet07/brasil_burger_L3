@@ -345,7 +345,7 @@ class ArrayNodeDefinition extends NodeDefinition implements ParentNodeDefinition
      *
      * @return $this
      */
-    public function canBeEnabled(/* ?string $info = null */): static
+    public function canBeEnabled(?string $info = null): static
     {
         $disabledNode = $this
             ->addDefaultsIfNotSet()
@@ -365,7 +365,6 @@ class ArrayNodeDefinition extends NodeDefinition implements ParentNodeDefinition
                     ->defaultFalse()
         ;
 
-        $info = 1 <= \func_num_args() ? func_get_arg(0) : null;
         if ($info) {
             $disabledNode->info($info);
         }
@@ -382,7 +381,7 @@ class ArrayNodeDefinition extends NodeDefinition implements ParentNodeDefinition
      *
      * @return $this
      */
-    public function canBeDisabled(/* ?string $info = null */): static
+    public function canBeDisabled(?string $info = null): static
     {
         $enabledNode = $this
             ->addDefaultsIfNotSet()
@@ -402,7 +401,6 @@ class ArrayNodeDefinition extends NodeDefinition implements ParentNodeDefinition
                     ->defaultTrue()
         ;
 
-        $info = 1 <= \func_num_args() ? func_get_arg(0) : null;
         if ($info) {
             $enabledNode->info($info);
         }

@@ -15,7 +15,7 @@ final class CommandeController extends AbstractController
 {
     private const LIMIT = 10;
     public function __construct(private CommandeService $commandeService) {}
-    #[Route('/', name: 'app_commande_list', methods:['GET', 'POST'])]
+    #[Route('/commande', name: 'app_commande_list', methods:['GET', 'POST'])]
     public function index(Request $request): Response
     {
         $filtre = [];
@@ -46,7 +46,7 @@ final class CommandeController extends AbstractController
             'formSearch' => $form->createView()
         ]);
     }
-    #[Route('/{id}', name: 'app_commande_details', requirements: ['id' => '\d+'], methods:['GET'])]
+    #[Route('commande/details/{id}', name: 'app_commande_details', requirements: ['id' => '\d+'], methods:['GET'])]
     public function show(int $id): Response
     {
         $commande = $this->commandeService->getCommandeById($id);

@@ -8,12 +8,10 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-        <link rel="stylesheet" href="{{asset('css/app.css') }}">
-        {% block stylesheets %}
-        {% endblock %}
-        <style type='text/css'>
-            {% block customStylesheets %}
-            {% endblock %}
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        {% block stylesheets %}{% endblock %}
+        <style>
+            {% block customStylesheets %}{% endblock %}
         </style>
         {% block javascripts %}
             {% block importmap %}{{ importmap('app') }}{% endblock %}
@@ -29,26 +27,29 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link " href="{{ path("app_dashboard") }}">Dashboard</a>
+                            <a class="nav-link" href="{{ path('app_dashboard') }}">Dashboard</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link " href="{{ path("app_commande_list") }}">Commandes</a>
+                            <a class="nav-link" href="{{ path('app_commande_list') }}">Commandes</a>
                         </li>
                     </ul>
+
                     <div class="d-flex align-items-center text-white">
-
+                        {# Vérifier si l'utilisateur est connecté #}
+                        {% if app.user %}
                             <i class="fa-solid fa-circle-user me-2" style="font-size:1.2rem;color:#FFF8EC;"></i>
-                            <span class="text-white me-3">username</span>
-                            <a href="" class="text-white text-decoration-none nav-link">Déconnexion</a>
-
-                            <a class="nav-link" href="" >
-                                <button style="width:100%" class="btn btn-orange m-3">Se connecter</button>
+                            <span class="text-white me-3">{{ app.user.username }}</span>
+                            <a href="{{ path('app_logout') }}" class="text-white text-decoration-none nav-link">Déconnexion</a>
+                        {% else %}
+                            <a class="nav-link" href="{{ path('app_login') }}">
+                                <button class="btn btn-orange m-3">Se connecter</button>
                             </a>
-
+                        {% endif %}
                     </div>
                 </div>
             </div>
         </nav>
+
         {% block body %}{% endblock %}
     </body>
 </html>

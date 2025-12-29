@@ -1,0 +1,61 @@
+{% extends 'auth.html.twig' %}
+
+{% block title %}Connexion - Brasil Burger{% endblock %}
+
+{% block body %}
+<div class="container d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+    <div class="row w-100 shadow-lg">
+        <div class="col-lg-6 auth-left d-flex flex-column justify-content-center">
+            <h2>
+                Bienvenue <br> chez Brasil Burger
+            </h2>
+        </div>
+        <div class="col-lg-6 auth-right">
+            <h2>Connexion</h2>
+            <p>Entrez les informations de connexion</p>
+            {% if error %}
+                <div class="alert alert-danger">
+                    {{ error.messageKey|trans(error.messageData, 'security') }}
+                </div>
+            {% endif %}
+            <form method="post">
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input
+                        type="email"
+                        name="email"
+                        class="form-control"
+                        placeholder="example@brasil.com"
+                        value="{{ last_username }}"
+                        required
+                        autofocus
+                        id="inputEmail"
+                        autocomplete="email" 
+                    >
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Mot de passe</label>
+                    <input
+                        type="password"
+                        name="password"
+                        class="form-control"
+                        placeholder="mot de passe"
+                        required
+                        id="inputPassword" 
+                        autocomplete="current-password" 
+                    >
+                </div>
+                <input
+                    type="hidden"
+                    name="_csrf_token"
+                    value="{{ csrf_token('authenticate') }}"
+                    data-controller="csrf-protection"
+                >
+                <button type="submit" class="btn btn-orange w-100 mb-3">
+                    Se connecter
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
