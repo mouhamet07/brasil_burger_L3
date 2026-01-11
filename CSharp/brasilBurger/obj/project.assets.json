@@ -2302,11 +2302,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\mouha\\Desktop\\brasil_burger_L3\\CSharp\\brasilBurger\\brasilBurger.csproj",
+      "projectUniqueName": "C:\\Users\\mouha\\Desktop\\Examen_Baila_L3\\brasil_burger_L3\\CSharp\\brasilBurger\\brasilBurger.csproj",
       "projectName": "brasilBurger",
-      "projectPath": "C:\\Users\\mouha\\Desktop\\brasil_burger_L3\\CSharp\\brasilBurger\\brasilBurger.csproj",
+      "projectPath": "C:\\Users\\mouha\\Desktop\\Examen_Baila_L3\\brasil_burger_L3\\CSharp\\brasilBurger\\brasilBurger.csproj",
       "packagesPath": "C:\\Users\\mouha\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\mouha\\Desktop\\brasil_burger_L3\\CSharp\\brasilBurger\\obj\\",
+      "outputPath": "C:\\Users\\mouha\\Desktop\\Examen_Baila_L3\\brasil_burger_L3\\CSharp\\brasilBurger\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\mouha\\AppData\\Roaming\\NuGet\\NuGet.Config"

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "8WSQLL61VnE=",
+  "dgSpecHash": "X2eEMzWrgPw=",
   "success": true,
-  "projectFilePath": "C:\\Users\\mouha\\Desktop\\brasil_burger_L3\\CSharp\\brasilBurger\\brasilBurger.csproj",
+  "projectFilePath": "C:\\Users\\mouha\\Desktop\\Examen_Baila_L3\\brasil_burger_L3\\CSharp\\brasilBurger\\brasilBurger.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\mouha\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\mouha\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\6.0.0\\microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",

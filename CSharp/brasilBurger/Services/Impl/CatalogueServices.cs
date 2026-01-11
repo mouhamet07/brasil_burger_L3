@@ -20,7 +20,9 @@ namespace brasilBurger.Services.Impl
             {
                 if (page < 1) page = 1;
                 int offset = (page - 1) * pageSize;
-                var burgers = _context.Burgers.Select(b => new CatalogueItemVM
+                var burgers = _context.Burgers
+                .Where(b => b.Etat == true)
+                .Select(b => new CatalogueItemVM
                 {
                     Id = b.Id,
                     Nom = b.Nom,
@@ -28,7 +30,9 @@ namespace brasilBurger.Services.Impl
                     Image = b.Image,
                     Type = "Burger"
                 });
-                var menus = _context.Menus.Select(m => new CatalogueItemVM
+                var menus = _context.Menus
+                .Where(m => m.Etat == true)
+                .Select(m => new CatalogueItemVM
                 {
                     Id = m.Id,
                     Nom = m.Nom,
@@ -54,8 +58,8 @@ namespace brasilBurger.Services.Impl
         {
             try
             {
-                var burgersCount = _context.Burgers.Count();
-                var menusCount = _context.Menus.Count();
+                var burgersCount = _context.Burgers.Count(b => b.Etat == true);
+                var menusCount = _context.Menus.Count(m => m.Etat == true);
                 type = type?.ToLower() ?? "all";
                 if (type == "burger")
                     return burgersCount;
@@ -75,7 +79,7 @@ namespace brasilBurger.Services.Impl
                 type = type?.ToLower();
                 if (type == "burger")
                 {
-                    var burger = _context.Burgers.Find(id);
+                    var burger = _context.Burgers.FirstOrDefault(b => b.Id == id && b.Etat == true);
                     if (burger == null) return null;
                     return new CatalogueItemVM
                     {
@@ -88,7 +92,7 @@ namespace brasilBurger.Services.Impl
                 }
                 else if (type == "menu")
                 {
-                    var menu = _context.Menus.Find(id);
+                    var menu = _context.Menus.FirstOrDefault(m => m.Id == id && m.Etat == true);
                     if (menu == null) return null;
                     return new CatalogueItemVM
                     {
@@ -110,7 +114,9 @@ namespace brasilBurger.Services.Impl
         {
             try
             {
-                return _context.Complements.ToList();
+                return _context.Complements
+                .Where(c => c.Etat == true)
+                .ToList();
             }catch (Exception)
             {
                 _logger.LogError("Erreur lors de la recuperation des complements");
@@ -122,7 +128,7 @@ namespace brasilBurger.Services.Impl
             try
             {
                 return _context.MenuComplements
-                    .Where(mc => mc.MenuId == id)
+                    .Where(mc => mc.MenuId == id && mc.Complement.Etat == true)
                     .Join(
                         _context.Complements,
                         mc => mc.ComplementId,
@@ -153,7 +159,7 @@ namespace brasilBurger.Services.Impl
         {
             try
             {
-                return _context.Complements.Find(id);
+                return _context.Complements.FirstOrDefault(c => c.Id == id && c.Etat == true);
             }
             catch (Exception)
             {
@@ -165,7 +171,7 @@ namespace brasilBurger.Services.Impl
         {
             try
             {
-                return _context.Zones.Where(z => z.Etat == true).FirstOrDefault(z => z.Id == zoneId);
+                return _context.Zones.FirstOrDefault(z => z.Id == zoneId && z.Etat == true);
             }
             catch (Exception)
             {

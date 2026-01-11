@@ -59,7 +59,7 @@ namespace brasilBurger.Controllers
                 var id=(int)HttpContext.Session.GetInt32("UserId");
                 var commandes=_commandeServices.GetCommandesByClient(id,page,etat);
                 ViewBag.CurrentPage=page;
-                ViewBag.TotalPages=(int)Math.Ceiling((double)_commandeServices.CountTotal(1,etat)/4);
+                ViewBag.TotalPages=(int)Math.Ceiling((double)_commandeServices.CountTotal(id,etat)/4);
                 ViewBag.SelectedEtat=etat;
                 return View(commandes);
             }
