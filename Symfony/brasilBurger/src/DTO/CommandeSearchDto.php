@@ -9,4 +9,7 @@ class CommandeSearchDto {
     public ?string $nomClient = null;
     public ?EtatCommande $etatCmd = null;
     public ?TypeCommande $typeCmd = null;
+    public ?\DateTimeInterface $date = null;
+    public ?\DateTimeInterface $dateDebut = null;
+    public ?\DateTimeInterface $dateFin = null;
 }

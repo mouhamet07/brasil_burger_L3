@@ -53,8 +53,8 @@
                         </strong>
                         {% if commande.etat.value == 'en_cours' %}
                             <span class="order-status status-pending">En cours</span>
-                        {% elseif commande.etat.value == 'annulee' %}
-                            <span class="order-status status-completed" style="width:100px;">Validée</span>
+                        {% elseif commande.etat.value == 'terminee' %}
+                            <span class="order-status status-completed" style="width:100px;">Terminée</span>
                         {% elseif commande.etat.value == 'en_attente' %}
                             <span class="order-status status-waiting ">En Attente</span>
                         {% else %}

@@ -55,7 +55,8 @@ class CommandeService implements CommandeServiceInterface
             ->setFirstResult($offset)
             ->setMaxResults($limit);
         if (!empty($filters['client'])) {
-            $qb->andWhere('LOWER(c.client.nomComplet) LIKE :client')
+            $qb->join('c.client', 'client')
+                ->andWhere('LOWER(client.nomComplet) LIKE :client')
                 ->setParameter('client', '%'.strtolower($filters['client']).'%');
         }
         if (!empty($filters['etat'])) {
@@ -72,11 +73,37 @@ class CommandeService implements CommandeServiceInterface
             }
             $qb->andWhere('c.type = :type')->setParameter('type', $type);
         }
-        if (!empty($filters['date'])) {
-            $qb->andWhere('DATE(c.dateCommande) = :date')
-                ->setParameter('date', $filters['date']->format('Y-m-d'));
+        if (!empty($filters['dateDebut']) || !empty($filters['dateFin']) || !empty($filters['date'])) {
+            $dateDebut = $filters['dateDebut'] ?? $filters['date'] ?? null;
+            $dateFin = $filters['dateFin'] ?? $filters['date'] ?? null;
+            $start = null;
+            $end = null;
+            if ($dateDebut !== null) {
+                $start = $dateDebut instanceof \DateTimeImmutable
+                    ? $dateDebut->setTime(0,0,0)
+                    : (new \DateTimeImmutable($dateDebut->format('Y-m-d')))->setTime(0,0,0);
+            }
+            if ($dateFin !== null) {
+                $end = $dateFin instanceof \DateTimeImmutable
+                    ? $dateFin->setTime(0,0,0)->modify('+1 day')
+                    : (new \DateTimeImmutable($dateFin->format('Y-m-d')))->setTime(0,0,0)->modify('+1 day');
+            }
+            if ($start !== null && $end !== null) {
+                $qb->andWhere('c.dateCommande >= :dateDebut')
+                    ->andWhere('c.dateCommande < :dateFinPlusOne')
+                    ->setParameter('dateDebut', $start)
+                    ->setParameter('dateFinPlusOne', $end);
+            } elseif ($start !== null) {
+                $end = $start->modify('+1 day');
+                $qb->andWhere('c.dateCommande >= :dateDebut')
+                    ->andWhere('c.dateCommande < :dateFinPlusOne')
+                    ->setParameter('dateDebut', $start)
+                    ->setParameter('dateFinPlusOne', $end);
+            } elseif ($end !== null) {
+                $qb->andWhere('c.dateCommande < :dateFinPlusOne')
+                    ->setParameter('dateFinPlusOne', $end);
+            }
         }
-
         return $qb->getQuery()->getResult();
     }
     public function countCommandes(array $filters): int
@@ -84,7 +111,8 @@ class CommandeService implements CommandeServiceInterface
         $qb = $this->commandeRepository->createQueryBuilder('c')
             ->select('COUNT(c.id)');
         if (!empty($filters['client'])) {
-            $qb->andWhere('LOWER(c.client.nomComplet) LIKE :client')
+            $qb->join('c.client', 'client')
+                ->andWhere('LOWER(client.nomComplet) LIKE :client')
                 ->setParameter('client', '%'.strtolower($filters['client']).'%');
         }
         if (!empty($filters['etat'])) {
@@ -101,9 +129,36 @@ class CommandeService implements CommandeServiceInterface
             }
             $qb->andWhere('c.type = :type')->setParameter('type', $type);
         }
-        if (!empty($filters['date'])) {
-            $qb->andWhere('DATE(c.dateCommande) = :date')
-                ->setParameter('date', $filters['date']->format('Y-m-d'));
+        if (!empty($filters['dateDebut']) || !empty($filters['dateFin']) || !empty($filters['date'])) {
+            $dateDebut = $filters['dateDebut'] ?? $filters['date'] ?? null;
+            $dateFin = $filters['dateFin'] ?? $filters['date'] ?? null;
+            $start = null;
+            $end = null;
+            if ($dateDebut !== null) {
+                $start = $dateDebut instanceof \DateTimeImmutable
+                    ? $dateDebut->setTime(0,0,0)
+                    : (new \DateTimeImmutable($dateDebut->format('Y-m-d')))->setTime(0,0,0);
+            }
+            if ($dateFin !== null) {
+                $end = $dateFin instanceof \DateTimeImmutable
+                    ? $dateFin->setTime(0,0,0)->modify('+1 day')
+                    : (new \DateTimeImmutable($dateFin->format('Y-m-d')))->setTime(0,0,0)->modify('+1 day');
+            }
+            if ($start !== null && $end !== null) {
+                $qb->andWhere('c.dateCommande >= :dateDebut')
+                    ->andWhere('c.dateCommande < :dateFinPlusOne')
+                    ->setParameter('dateDebut', $start)
+                    ->setParameter('dateFinPlusOne', $end);
+            } elseif ($start !== null) {
+                $end = $start->modify('+1 day');
+                $qb->andWhere('c.dateCommande >= :dateDebut')
+                ->andWhere('c.dateCommande < :dateFinPlusOne')
+                    ->setParameter('dateDebut', $start)
+                    ->setParameter('dateFinPlusOne', $end);
+            } elseif ($end !== null) {
+                $qb->andWhere('c.dateCommande < :dateFinPlusOne')
+                    ->setParameter('dateFinPlusOne', $end);
+            }
         }
         return (int) $qb->getQuery()->getSingleScalarResult();
     }

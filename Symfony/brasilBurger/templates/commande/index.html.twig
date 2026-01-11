@@ -11,14 +11,20 @@
         <div class="card-body">
             {{ form_start(formSearch) }}
             <div class="row mb-3">
-                <div class="col-md-6">
-                    {{ form_widget(formSearch.nomClient, {'attr': {'class': 'form-control', 'placeholder': 'Rechercher un client'}}) }}
+                <div class="col-md-2">
+                    {{ form_widget(formSearch.nomClient, {'attr': {'class': 'form-control', 'placeholder': 'Rechercher client'}}) }}
                 </div>
                 <div class="col-md-3">
                     {{ form_widget(formSearch.etatCmd, {'attr': {'class': 'form-select'}}) }}
                 </div>
                 <div class="col-md-3">
                     {{ form_widget(formSearch.typeCmd, {'attr': {'class': 'form-select'}}) }}
+                </div>
+                <div class="col-md-2">
+                    {{ form_widget(formSearch.dateDebut, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="col-md-2">
+                    {{ form_widget(formSearch.dateFin, {'attr': {'class': 'form-control'}}) }}
                 </div>
             </div>
             <button type="submit" class="btn btn-orange">Filtrer</button>
@@ -52,7 +58,15 @@
                                     {{ item.produit.value }}{% if not loop.last %}, {% endif %}
                                 {% endfor %}
                             </td>
-                            <td>{{ commande.type|capitalize }}</td>
+                            <td>
+                                {% if commande.type == 'livraison' %}
+                                    Livraison
+                                {% elseif commande.type == 'sur_place' %}
+                                    Sur place
+                                {% else %}
+                                    A Recuperer
+                                {% endif %}
+                            </td>
                             <td>
                                 {% if commande.etat == 'en_cours' %}
                                     <span class="badge status-pending">En cours</span>
