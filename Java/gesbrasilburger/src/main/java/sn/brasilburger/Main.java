@@ -260,7 +260,7 @@ public class Main {
                     try {
                         burger.setImage(ius.uploadImage(img));
                     } catch (Exception e) {
-                        GesViews.afficherErreur("Erreur lors de l'upload: " + e.getMessage());
+                        GesViews.afficherErreur("Valeur inchangée, erreur lors de l'upload: " + e.getMessage());
                     }
                     success = bs.updateBurger(burger);
                     if (success) {
@@ -666,7 +666,7 @@ public class Main {
                     GesViews.afficherErreur("Choix indisponible");
                     break;
             }
-        } while (choix != 3);
+        } while (choix != 2);
     }
     private User Login(){
         GesViews.afficherTitre("Connexion");

@@ -1,5 +1,6 @@
 package sn.brasilburger.services.Impl;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -24,8 +25,13 @@ public class ImageUploadServiceImpl implements ImageUploadService{
     }
     @Override
     public String uploadImage(String localPath) throws IOException {
-        byte[] bytes = Files.readAllBytes(Path.of(localPath));
-        Map upload = cloudinary.uploader().upload(bytes, ObjectUtils.emptyMap());
-        return upload.get("secure_url").toString(); 
+        localPath = localPath.replace("\"", "").trim();
+        File file = new File(localPath);
+        if (!file.exists()) {
+            throw new IOException("Fichier introuvable : " + localPath);
+        }
+        Map upload = cloudinary.uploader().upload(file, ObjectUtils.emptyMap());
+        return upload.get("secure_url").toString();
     }
+
 }

@@ -102,7 +102,7 @@ public class LoginRepositoryBd implements LoginRepository{
         PreparedStatement ps;
         Connection conn = database.getConnection();
         try {
-            ps = conn.prepareStatement("SELECT * FROM \"user\" WHERE role = CAST('GESTIONNAIRE' AS role_user) AND etat=true");
+            ps = conn.prepareStatement("SELECT * FROM \"user\" WHERE role = CAST('gestionnaire' AS role_user) AND etat=true");
             users = database.<User>fetchAll(ps, this::toEntity);
         } catch (SQLException e) {
             System.out.println("Erreur lors de la recherche: " + e.getMessage());

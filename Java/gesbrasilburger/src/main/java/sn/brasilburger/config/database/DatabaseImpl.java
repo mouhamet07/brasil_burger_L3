@@ -67,11 +67,10 @@ public class DatabaseImpl implements Database {
     @Override
     public <T> Optional<T> fetch(PreparedStatement ps, Convert<T> convert) throws SQLException{
         ResultSet rs = ps.executeQuery();
-        T data = null;
         if (rs.next()) {
-            data = convert.toEntity(rs);
+            return Optional.of(convert.toEntity(rs));
         }
-        return Optional.of(data);
+        return Optional.empty();
     }
     @Override
     public <T> List<T> fetchAll(PreparedStatement ps, Convert<T> convert) throws SQLException{
